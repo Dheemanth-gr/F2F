@@ -8,17 +8,68 @@ db = pymysql.connect("localhost", "root", "", "Farmers")
 
 app = Flask(__name__)
 
+def current_time():
+    #TODO
+    return "25-01-2020:10-18-16"
+
+@app.route('/api/check', methods=['GET'])
+def check():
+    json = request.get_json()
+
+    inp={"table":json["table"],"columns":["*"],"where":json["where"]}
+    send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
+    data=send.content
+    data=eval(data)
+
+    if(len(data) > 0):
+        return Response("1",status=200,mimetype="application/text")
+    else:
+        return Response("0",status=204,mimetype="application/text")
+
+@app.route('/api/login', methods=['GET'])
+def login():
+    json = request.get_json()
+
+    if(json["type"] == "consumer"):
+        inp={"table":"CONSUMER","where":"CONSID ="+json["userid"]}
+    else:
+        inp={"table":"FARMER","where":"FAMRID ="+json["userid"]}
+    send=requests.get('http://127.0.0.1:5000/api/check',json=inp)
+
+    if(send.status_code == requests.codes.ok):
+        return Response("1",status=200,mimetype="application/text")
+    else:
+        return Response("0",status=204,mimetype="application/text")
+
+
+@app.route('/api/GenId', methods=['GET'])
+def GenId():
+    json = request.get_json()
+
+    inp={"table":json["table"],"columns":["MAX("+json["column"]+")"],"where":""}
+    send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
+    data=send.content
+    data=eval(data)
+
+    if(len(data) > 0):
+        return Response(str(data[0][0]+1),status=200,mimetype="application/text")
+    else:
+        return Response("1",status=200,mimetype="application/text")
+
 @app.route('/api/user', methods=['POST'])
 def add_user():
     json = request.get_json()
-    userid=1237
-
     if json["type"]=="farmer":
         table="FARMER"
         columns=["FARMID","FARMNAME","FARMPASS","FARMLOC"]
     elif json["type"]=="consumer":
         table="CONSUMER"
         columns=["CONSID","CONSNAME","CONSPASS","CONSLOC"]
+    
+    inp={"table":table,"column":columns[0]}
+    send=requests.get('http://127.0.0.1:5000/api/GenId',json=inp)
+    userid=send.content
+    userid=eval(userid)
 
     inp={"table":table,"type":"insert","columns":columns,"data":[str(userid),json["name"],json["pass"],json["loc"]]}
     send=requests.post('http://127.0.0.1:5000/api/db/write',json=inp)
@@ -31,9 +82,11 @@ def add_user():
 @app.route('/api/product', methods=['POST'])
 def add_product():
     json = request.get_json()
-    prodid=1236
-
-    inp={"table":"PRODUCT","type":"insert","columns":["PRODID","PRODTITLE","PRODDESC","PRODTYPE","UPLOADTIME","OWNERID","PRICE","MAXQUANT","MINBUYQUANT"],"data":[str(prodid),json["title"],json["desc"],json["type"],"25-01-2020:10-18-16",json["ownerid"],json["price"],json["maxquant"],json["minbuyquant"]]}
+    inp={"table":"PRODUCT","column":"PRODID"}
+    send=requests.get('http://127.0.0.1:5000/api/GenId',json=inp)
+    prodid=send.content
+    prodid=eval(prodid)
+    inp={"table":"PRODUCT","type":"insert","columns":["PRODID","PRODTITLE","PRODDESC","PRODTYPE","UPLOADTIME","OWNERID","PRICE","MAXQUANT","MINBUYQUANT"],"data":[str(prodid),json["title"],json["desc"],json["type"],current_time(),json["ownerid"],json["price"],json["maxquant"],json["minbuyquant"]]}
     send=requests.post('http://127.0.0.1:5000/api/db/write',json=inp)
 
     if(send.status_code == requests.codes.ok):
@@ -51,9 +104,47 @@ def add_product():
 
 @app.route('/api/review', methods=['POST'])
 def add_review():
-    reviewid=1235
+    inp={"table":"REVIEW","column":"REVIEWID"}
+    send=requests.get('http://127.0.0.1:5000/api/GenId',json=inp)
+    reviewid=send.content
+    reviewid=eval(reviewid)
     json = request.get_json()
-    inp={"table":"REVIEW","type":"insert","columns":["REVIEWID","REVIEWERID","PRODID","REVIEWDESC","REVIEWSTAR","REVIEWTIME","VERIFIED"],"data":[str(reviewid),json["reviewerid"],json["prodid"],json["reviewdesc"],json["reviewstar"],"25-01-2020:10-18-16",json["verified"]]}
+    inp={"table":"REVIEW","type":"insert","columns":["REVIEWID","REVIEWERID","PRODID","REVIEWDESC","REVIEWSTAR","REVIEWTIME","VERIFIED"],"data":[str(reviewid),json["reviewerid"],json["prodid"],json["reviewdesc"],json["reviewstar"],current_time(),json["verified"]]}
+    send=requests.post('http://127.0.0.1:5000/api/db/write',json=inp)
+
+    if(send.status_code == requests.codes.ok):
+        return Response("1",status=200,mimetype="application/text")
+    else:
+        return Response("0",status=500,mimetype="application/text")
+
+@app.route('/api/cart', methods=['POST'])
+def add_cart():
+    json = request.get_json()
+    inp={"table":"CART","type":"insert","columns":["CONSID","PRODID","QUANTITY"],"data":[json["consid"],json["prodid"],json["quantity"]]}
+    send=requests.post('http://127.0.0.1:5000/api/db/write',json=inp)
+
+    if(send.status_code == requests.codes.ok):
+        return Response("1",status=200,mimetype="application/text")
+    else:
+        return Response("0",status=500,mimetype="application/text")
+
+@app.route('/api/buy', methods=['POST'])
+def add_sale():
+    inp={"table":"CART","columns":["*"],"where":""}
+    send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
+    data=send.content
+    data=eval(data)
+    inp={"table":"SALES","column":"SALEID"}
+    send=requests.get('http://127.0.0.1:5000/api/GenId',json=inp)
+    saleid=send.content
+    saleid=eval(saleid)
+    for i in range(0,len(data)):
+        inp={"table":"SALES","type":"insert","columns":["SALEID","CONSID","PRODID","QUANTITY","BUYTIME"],"data":[str(saleid),str(data[i][0]),str(data[i][1]),str(data[i][2]),current_time()]}
+        send=requests.post('http://127.0.0.1:5000/api/db/write',json=inp)
+        if(send.status_code != requests.codes.ok):
+            return Response("0",status=500,mimetype="application/text")
+
+    inp={"table":"CART","type":"delete","where":""}
     send=requests.post('http://127.0.0.1:5000/api/db/write',json=inp)
 
     if(send.status_code == requests.codes.ok):
@@ -90,12 +181,12 @@ def search(term):
     #inp={"table":"product","columns":["PRODTITLE"],"where":""}
     inp={"table":"PRODUCT","columns":["PRODTITLE"],"where":"PRODTITLE LIKE '"+term+"%'"}
     send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
-    credential=send.content
-    credential=eval(credential)
-    result=[i[0] for i in credential]
+    data=send.content
+    data=eval(data)
+    result=[i[0] for i in data]
     """
     result=[]
-    for i in credential:
+    for i in data:
         if(i[0].startswith(term)):
             result.append(i[0])
     """
@@ -106,64 +197,64 @@ def disp_product(prodid):
 
     inp={"table":"PRODUCT","columns":["PRODTITLE","PRODDESC","PRODTYPE","UPLOADTIME","OWNERID","PRICE","MAXQUANT","MINBUYQUANT"],"where":"PRODID="+prodid}
     send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
-    credential=send.content
-    credential=eval(credential)
+    data=send.content
+    data=eval(data)
 
-    for l in range(0,len(credential)):
-        inp={"table":"FARMER","columns":["FARMNAME","FARMLOC"],"where":"FARMID="+str(credential[l][4])}
+    for l in range(0,len(data)):
+        inp={"table":"FARMER","columns":["FARMNAME","FARMLOC"],"where":"FARMID="+str(data[l][4])}
         send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
         user=send.content
         user=eval(user)
         for i in user[0]:
             print(i)
-            credential[l].append(i)
+            data[l].append(i)
 
-    for i in range(0,len(credential)):
+    for i in range(0,len(data)):
         temp = {}
-        temp["PRODTITLE"] = credential[i][0]
-        temp["PRODDESC"] = credential[i][1]
-        temp["PRODTYPE"] = credential[i][2]
-        temp["UPLOADTIME"] = credential[i][3]
-        temp["OWNERID"] = credential[i][4]
-        temp["PRICE"] = credential[i][5]
-        temp["MAXQUANT"] = credential[i][6]
-        temp["MINBUYQUANT"] = credential[i][7]
-        temp["FARMNAME"] = credential[i][8]
-        temp["FARMLOC"] = credential[i][9]
-        credential[i] = temp
+        temp["PRODTITLE"] = data[i][0]
+        temp["PRODDESC"] = data[i][1]
+        temp["PRODTYPE"] = data[i][2]
+        temp["UPLOADTIME"] = data[i][3]
+        temp["OWNERID"] = data[i][4]
+        temp["PRICE"] = data[i][5]
+        temp["MAXQUANT"] = data[i][6]
+        temp["MINBUYQUANT"] = data[i][7]
+        temp["FARMNAME"] = data[i][8]
+        temp["FARMLOC"] = data[i][9]
+        data[i] = temp
 
-    return jsonify(credential)
+    return jsonify(data)
 
 @app.route('/api/review/<prodid>',methods=["GET"])
 def disp_review(prodid):
 
     inp={"table":"REVIEW","columns":["REVIEWID","REVIEWERID","REVIEWDESC","REVIEWSTAR","REVIEWTIME","VERIFIED"],"where":"PRODID="+prodid}
     send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
-    credential=send.content
-    credential=eval(credential)
+    data=send.content
+    data=eval(data)
 
-    for l in range(0,len(credential)):
-        inp={"table":"CONSUMER","columns":["CONSNAME","CONSLOC"],"where":"CONSID="+str(credential[l][1])}
+    for l in range(0,len(data)):
+        inp={"table":"CONSUMER","columns":["CONSNAME","CONSLOC"],"where":"CONSID="+str(data[l][1])}
         send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
         user=send.content
         user=eval(user)
         for i in user[0]:
             print(i)
-            credential[l].append(i)
+            data[l].append(i)
 
-    for i in range(0,len(credential)):
+    for i in range(0,len(data)):
         temp = {}
-        temp["REVIEWID"] = credential[i][0]
-        temp["REVIEWERID"] = credential[i][1]
-        temp["REVIEWDESC"] = credential[i][2]
-        temp["REVIEWSTAR"] = credential[i][3]
-        temp["REVIEWTIME"] = credential[i][4]
-        temp["VERIFIED"] = credential[i][5]
-        temp["CONSNAME"] = credential[i][6]
-        temp["CONSLOC"] = credential[i][7]
-        credential[i] = temp
+        temp["REVIEWID"] = data[i][0]
+        temp["REVIEWERID"] = data[i][1]
+        temp["REVIEWDESC"] = data[i][2]
+        temp["REVIEWSTAR"] = data[i][3]
+        temp["REVIEWTIME"] = data[i][4]
+        temp["VERIFIED"] = data[i][5]
+        temp["CONSNAME"] = data[i][6]
+        temp["CONSLOC"] = data[i][7]
+        data[i] = temp
 
-    return jsonify(credential)
+    return jsonify(data)
 
 @app.route('/api/db/write',methods=["POST"])
 def write_db():
