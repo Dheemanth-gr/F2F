@@ -50,8 +50,8 @@ def GenId():
     send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
     data=send.content
     data=eval(data)
-
-    if(len(data) > 0):
+    print(data[0][0])
+    if(data[0][0] != None):
         return Response(str(data[0][0]+1),status=200,mimetype="application/text")
     else:
         return Response("1",status=200,mimetype="application/text")
@@ -75,7 +75,7 @@ def add_user():
     send=requests.post('http://127.0.0.1:5000/api/db/write',json=inp)
 
     if(send.status_code == requests.codes.ok):
-        return Response("1",status=200,mimetype="application/text")
+        return Response(str(userid),status=200,mimetype="application/text")
     else:
         return Response("0",status=500,mimetype="application/text")
 
@@ -90,7 +90,7 @@ def add_product():
     send=requests.post('http://127.0.0.1:5000/api/db/write',json=inp)
 
     if(send.status_code == requests.codes.ok):
-        return Response("1",status=200,mimetype="application/text")
+        return Response(str(prodid),status=200,mimetype="application/text")
     else:
         return Response("0",status=500,mimetype="application/text")
 """
@@ -113,7 +113,7 @@ def add_review():
     send=requests.post('http://127.0.0.1:5000/api/db/write',json=inp)
 
     if(send.status_code == requests.codes.ok):
-        return Response("1",status=200,mimetype="application/text")
+        return Response(str(reviewid),status=200,mimetype="application/text")
     else:
         return Response("0",status=500,mimetype="application/text")
 
@@ -148,7 +148,7 @@ def add_sale():
     send=requests.post('http://127.0.0.1:5000/api/db/write',json=inp)
 
     if(send.status_code == requests.codes.ok):
-        return Response("1",status=200,mimetype="application/text")
+        return Response(str(saleid),status=200,mimetype="application/text")
     else:
         return Response("0",status=500,mimetype="application/text")
 
@@ -157,7 +157,10 @@ def upload(prodid):
 
     #Accepts all files
     #If user uploads the same file again then a new file will not be created
-    imageid=1240
+    inp={"table":"IMAGE","column":"IMAGEID"}
+    send=requests.get('http://127.0.0.1:5000/api/GenId',json=inp)
+    imageid=send.content
+    imageid=eval(imageid)
     file = request.files['file']
     filename = secure_filename(file.filename)
     file_ext = os.path.splitext(filename)[1]
@@ -171,7 +174,7 @@ def upload(prodid):
     if(send.status_code == requests.codes.ok):
         os.makedirs(uploads_dir, exist_ok=True)
         file.save(os.path.join(uploads_dir, filename))
-        return Response("1",status=200,mimetype="application/text")
+        return Response(str(imageid),status=200,mimetype="application/text")
     else:
         return Response("0",status=500,mimetype="application/text")
 
