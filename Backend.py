@@ -152,6 +152,19 @@ def add_sale():
     else:
         return Response("0",status=500,mimetype="application/text")
 
+@app.route('/api/image/<imageid>', methods=['GET'])
+def get_image(imageid):
+
+    inp={"table":"IMAGE","columns":["IMAGEPATH","IMAGENAME"],"where":"IMAGEID = "+imageid}
+    send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
+    data=send.content
+    data=eval(data)
+
+    if(len(data) > 0):
+        return Response(data[0][0]+"/"+data[0][1],status=200,mimetype="application/text")
+    else:
+        return Response("0",status=204,mimetype="application/text")
+
 @app.route('/api/image/<prodid>', methods=['POST'])
 def upload(prodid):
 
@@ -195,6 +208,23 @@ def search(term):
     """
     return jsonify(result)
 
+@app.route('/api/search/<term>',methods=["GET"])
+def complete_search(term):
+
+    #inp={"table":"product","columns":["PRODTITLE"],"where":""}
+    inp={"table":"PRODUCT","columns":["PRODID"],"where":"PRODTITLE LIKE '"+term+"%'"}
+    send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
+    data=send.content
+    data=eval(data)
+    data=[i[0] for i in data]
+    result=[]
+    for i in data:
+        send=requests.get('http://127.0.0.1:5000/api/product/'+str(i))
+        d=send.content
+        d=eval(d)
+        result.append(d[0])
+    return jsonify(result)
+
 @app.route('/api/product/<prodid>',methods=["GET"])
 def disp_product(prodid):
 
@@ -202,29 +232,46 @@ def disp_product(prodid):
     send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
     data=send.content
     data=eval(data)
+    data = data[0]
 
-    for l in range(0,len(data)):
-        inp={"table":"FARMER","columns":["FARMNAME","FARMLOC"],"where":"FARMID="+str(data[l][4])}
-        send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
-        user=send.content
-        user=eval(user)
-        for i in user[0]:
-            print(i)
-            data[l].append(i)
+    #for l in range(0,len(data)):
+    inp={"table":"FARMER","columns":["FARMNAME","FARMLOC"],"where":"FARMID="+str(data[4])}
+    send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
+    user=send.content
+    user=eval(user)
+    for i in user[0]:
+        data.append(i)
 
-    for i in range(0,len(data)):
+    inp={"table":"IMAGE","columns":["IMAGEID","IMAGEPATH","IMAGENAME"],"where":"PRODID="+prodid}
+    send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
+    img=send.content
+    img=eval(img)
+    l = []
+    for i in img:
         temp = {}
-        temp["PRODTITLE"] = data[i][0]
-        temp["PRODDESC"] = data[i][1]
-        temp["PRODTYPE"] = data[i][2]
-        temp["UPLOADTIME"] = data[i][3]
-        temp["OWNERID"] = data[i][4]
-        temp["PRICE"] = data[i][5]
-        temp["MAXQUANT"] = data[i][6]
-        temp["MINBUYQUANT"] = data[i][7]
-        temp["FARMNAME"] = data[i][8]
-        temp["FARMLOC"] = data[i][9]
-        data[i] = temp
+        temp["IMAGEID"] = i[0]
+        temp["IMAGEPATH"] = i[1] + "/" + i[2]
+        l.append(temp)
+    data.append(l)
+
+    #for i in range(0,len(data)):
+    print(data)
+    print(data[0])
+    print(data[6])
+
+    temp = {}
+    temp["PRODTITLE"] = data[0]
+    temp["PRODDESC"] = data[1]
+    temp["PRODTYPE"] = data[2]
+    temp["UPLOADTIME"] = data[3]
+    temp["OWNERID"] = data[4]
+    temp["PRICE"] = data[5]
+    temp["MAXQUANT"] = data[6]
+    temp["MINBUYQUANT"] = data[7]
+    temp["FARMNAME"] = data[8]
+    temp["FARMLOC"] = data[9]
+    temp["IMAGES"] = data[10]
+    data = temp
 
     return jsonify(data)
 
