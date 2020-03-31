@@ -120,6 +120,17 @@ def add_review():
 @app.route('/api/cart', methods=['POST'])
 def add_cart():
     json = request.get_json()
+
+    inp={"table":"PRODUCT","where":"PRODID = "+json["prodid"]+" AND "+json["quantity"]+" >= MINBUYQUANT"}
+    send=requests.get('http://127.0.0.1:5000/api/check',json=inp)
+    if(send.status_code != requests.codes.ok):
+        return Response("Not buying minimum quantity",status=400,mimetype="application/text")
+    
+    inp={"table":"CART","where":"PRODID = "+json["prodid"]+" AND CONSID = "+json["consid"]}
+    send=requests.get('http://127.0.0.1:5000/api/check',json=inp)
+    if(send.status_code == requests.codes.ok):
+        return Response("Already in CART",status=400,mimetype="application/text")
+
     inp={"table":"CART","type":"insert","columns":["CONSID","PRODID","QUANTITY"],"data":[json["consid"],json["prodid"],json["quantity"]]}
     send=requests.post('http://127.0.0.1:5000/api/db/write',json=inp)
 
@@ -225,6 +236,27 @@ def complete_search(term):
         result.append(d[0])
     return jsonify(result)
 
+@app.route('/api/cart/<consid>', methods=['GET'])
+def get_cart(consid):
+
+    #inp={"table":"product","columns":["PRODTITLE"],"where":""}
+    inp={"table":"CART","columns":["PRODID","QUANTITY"],"where":"CONSID ="+consid}
+    send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
+    data=send.content
+    data=eval(data)
+    result=[]
+    for i in data:
+        send=requests.get('http://127.0.0.1:5000/api/product/'+str(i[0]))
+        d=send.content
+        d=eval(d)
+        d["BUY_Quanity"] = i[1]
+        d["TOTAL_PRICE"] = d["PRICE"] * d["BUY_Quanity"] / d["MAXQUANT"]
+        del d["MAXQUANT"]
+        del d["MINBUYQUANT"]
+        del d["PRICE"]
+        result.append(d)
+    return jsonify(result)
+
 @app.route('/api/product/<prodid>',methods=["GET"])
 def disp_product(prodid):
 
@@ -255,9 +287,6 @@ def disp_product(prodid):
     data.append(l)
 
     #for i in range(0,len(data)):
-    print(data)
-    print(data[0])
-    print(data[6])
 
     temp = {}
     temp["PRODTITLE"] = data[0]
