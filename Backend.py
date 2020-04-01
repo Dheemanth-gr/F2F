@@ -1,30 +1,13 @@
 from flask import Flask,jsonify,request,Response
 import os
-import pymysql
 import requests
-from werkzeug.utils import secure_filename
-
-db = pymysql.connect("localhost", "root", "", "Farmers")
+import sys
+import price_suggestion as ps
+import related_products as rp
 
 app = Flask(__name__)
 
-def current_time():
-    #TODO
-    return "25-01-2020:10-18-16"
-
-@app.route('/api/check', methods=['GET'])
-def check():
-    json = request.get_json()
-
-    inp={"table":json["table"],"columns":["*"],"where":json["where"]}
-    send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
-    data=send.content
-    data=eval(data)
-
-    if(len(data) > 0):
-        return Response("1",status=200,mimetype="application/text")
-    else:
-        return Response("0",status=204,mimetype="application/text")
+import Requirements as R
 
 @app.route('/api/login', methods=['GET'])
 def login():
@@ -41,20 +24,37 @@ def login():
     else:
         return Response("0",status=204,mimetype="application/text")
 
+@app.route('/api/related/<prodid>', methods=['GET'])
+def related_products(prodid):
 
-@app.route('/api/GenId', methods=['GET'])
-def GenId():
-    json = request.get_json()
-
-    inp={"table":json["table"],"columns":["MAX("+json["column"]+")"],"where":""}
+    inp={"table":"PRODUCT","columns":["PRODTITLE"],"where":"PRODID = "+prodid}
     send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
     data=send.content
     data=eval(data)
-    print(data[0][0])
-    if(data[0][0] != None):
-        return Response(str(data[0][0]+1),status=200,mimetype="application/text")
-    else:
-        return Response("1",status=200,mimetype="application/text")
+    rel = rp.related(data[0][0])
+
+    result = []
+    for prod in rel:
+        inp={"table":"PRODUCT","columns":["PRODID"],"where":"PRODTITLE LIKE '"+prod+"%'"}
+        send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
+        ids=send.content
+        ids=eval(ids)
+        for pid in ids:
+            send=requests.get('http://127.0.0.1:5000/api/product/'+str(pid[0]))
+            d=send.content
+            d=eval(d)
+            del d["MAXQUANT"]
+            del d["MINBUYQUANT"]
+            result.append(d)
+
+    return jsonify(result)
+
+@app.route('/api/price', methods=['GET'])
+def predict_price():
+    json = request.get_json()
+    data = ps.predict(json["state"],json["district"],json["product"])
+    print(data)
+    return jsonify(data)
 
 @app.route('/api/user', methods=['POST'])
 def add_user():
@@ -86,7 +86,7 @@ def add_product():
     send=requests.get('http://127.0.0.1:5000/api/GenId',json=inp)
     prodid=send.content
     prodid=eval(prodid)
-    inp={"table":"PRODUCT","type":"insert","columns":["PRODID","PRODTITLE","PRODDESC","PRODTYPE","UPLOADTIME","OWNERID","PRICE","MAXQUANT","MINBUYQUANT"],"data":[str(prodid),json["title"],json["desc"],json["type"],current_time(),json["ownerid"],json["price"],json["maxquant"],json["minbuyquant"]]}
+    inp={"table":"PRODUCT","type":"insert","columns":["PRODID","PRODTITLE","PRODDESC","PRODTYPE","UPLOADTIME","OWNERID","PRICE","MAXQUANT","MINBUYQUANT"],"data":[str(prodid),json["title"],json["desc"],json["type"],R.current_time(),json["ownerid"],json["price"],json["maxquant"],json["minbuyquant"]]}
     send=requests.post('http://127.0.0.1:5000/api/db/write',json=inp)
 
     if(send.status_code == requests.codes.ok):
@@ -109,7 +109,7 @@ def add_review():
     reviewid=send.content
     reviewid=eval(reviewid)
     json = request.get_json()
-    inp={"table":"REVIEW","type":"insert","columns":["REVIEWID","REVIEWERID","PRODID","REVIEWDESC","REVIEWSTAR","REVIEWTIME","VERIFIED"],"data":[str(reviewid),json["reviewerid"],json["prodid"],json["reviewdesc"],json["reviewstar"],current_time(),json["verified"]]}
+    inp={"table":"REVIEW","type":"insert","columns":["REVIEWID","REVIEWERID","PRODID","REVIEWDESC","REVIEWSTAR","REVIEWTIME","VERIFIED"],"data":[str(reviewid),json["reviewerid"],json["prodid"],json["reviewdesc"],json["reviewstar"],R.current_time(),json["verified"]]}
     send=requests.post('http://127.0.0.1:5000/api/db/write',json=inp)
 
     if(send.status_code == requests.codes.ok):
@@ -150,7 +150,7 @@ def add_sale():
     saleid=send.content
     saleid=eval(saleid)
     for i in range(0,len(data)):
-        inp={"table":"SALES","type":"insert","columns":["SALEID","CONSID","PRODID","QUANTITY","BUYTIME"],"data":[str(saleid),str(data[i][0]),str(data[i][1]),str(data[i][2]),current_time()]}
+        inp={"table":"SALES","type":"insert","columns":["SALEID","CONSID","PRODID","QUANTITY","BUYTIME"],"data":[str(saleid),str(data[i][0]),str(data[i][1]),str(data[i][2]),R.current_time()]}
         send=requests.post('http://127.0.0.1:5000/api/db/write',json=inp)
         if(send.status_code != requests.codes.ok):
             return Response("0",status=500,mimetype="application/text")
@@ -334,76 +334,6 @@ def disp_review(prodid):
         data[i] = temp
 
     return jsonify(data)
-
-@app.route('/api/db/write',methods=["POST"])
-def write_db():
-    json = request.get_json()
-    cur = db.cursor()
-
-    if(json["type"]=="insert"):
-
-        columns = json["columns"][0]
-        data = "'"+json["data"][0]+"'"
-
-        for iter in range(1,len(json["columns"])):
-            columns = columns + "," + json["columns"][iter]
-            data = data + ",'" + json["data"][iter]+"'"
-
-        sql = "INSERT INTO "+json["table"]+"("+columns+") VALUES ("+data+")"
-    elif(json["type"]=="delete"):
-
-        if json["where"]!="":
-            sql = "DELETE FROM "+json["table"]+" WHERE "+json["where"]
-        else:
-            sql = "DELETE FROM "+json["table"]
-
-    cur.execute(sql)
-    db.commit()
-    cur.close()
-
-    return Response("1",status=200,mimetype="application/text")
-
-"""
-{
-	"table":"farmer",
-	"type":"insert",
-	"columns":["FARMID","FARMNAME","FARMPASS","FARMLOC"],
-	"data":["1234","Hello","password",""]
-}
-{
-	"table":"farmer",
-	"type":"delete",
-	"where":""
-}
-"""
-
-@app.route('/api/db/read',methods=["GET"])
-def read_db():
-    json = request.get_json()
-    cur = db.cursor()
-    columns = json["columns"][0]
-    
-    for iter in range(1,len(json["columns"])):
-        columns = columns + "," + json["columns"][iter]
-
-    if json["where"]!="":
-        sql = "SELECT "+columns+" FROM "+json["table"]+" WHERE "+json["where"]
-    else:
-        sql = "SELECT "+columns+" FROM "+json["table"]
-    cur.execute(sql)
-    results = cur.fetchall()
-    results = list(map(list,results))
-    cur.close()
-
-    return Response(str(results),status=200,mimetype="application/text")
-
-"""
-{
-	"table":"farmer",
-	"columns":["FARMID","FARMNAME"],
-	"where":""
-}
-"""
 
 if __name__ == '__main__':
     app.debug=True

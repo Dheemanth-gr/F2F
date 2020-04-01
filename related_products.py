@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-dataset = pd.read_csv('../input/Market_Basket_Optimisation.csv', header = None) #To make sure the first row is not thought of as the heading
+dataset = pd.read_csv('data/Market_Basket_Optimisation.csv', header = None) #To make sure the first row is not thought of as the heading
 # print(dataset.shape)
 
 #Transforming the list into a list of lists, so that each transaction can be indexed easier
@@ -33,7 +33,7 @@ d = {}
 for itemset in res:
     for i in itemset:
         if i=='nan':
-            continue;
+            continue
         if i not in d:
             d[i] = set()
         for j in itemset:
@@ -42,9 +42,9 @@ for itemset in res:
                 
 #print(d)
 
-def related(d,item):
+def related(item):
     if item not in d:
         return []
     return list(d[item])
     
-print(related(d,'soup'))
+#print(related('soup'))
