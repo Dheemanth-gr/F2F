@@ -139,6 +139,49 @@ def add_cart():
     else:
         return Response("0",status=500,mimetype="application/text")
 
+@app.route('/api/cart/update', methods=['POST'])
+def update_cart():
+    json = request.get_json()
+
+    inp={"table":"PRODUCT","where":"PRODID = "+json["prodid"]+" AND "+json["quantity"]+" >= MINBUYQUANT"}
+    send=requests.get('http://127.0.0.1:5000/api/check',json=inp)
+    if(send.status_code != requests.codes.ok):
+        return Response("Not buying minimum quantity",status=400,mimetype="application/text")
+
+    inp={"table":"CART","where": "CONSID="+json["consid"]+" AND PRODID = "+json["prodid"]}
+    send=requests.get('http://127.0.0.1:5000/api/check',json=inp)
+    if(send.status_code != requests.codes.ok):
+        return Response("Product not present in cart",status=400,mimetype="application/text")
+
+    inp={"table": "CART","type": "update","columns": ["QUANTITY"],"data": [json["quantity"]],"where": "CONSID = "+json["consid"]+" AND PRODID = "+json["prodid"]}
+    send=requests.post('http://127.0.0.1:5000/api/db/write',json=inp)
+
+    if(send.status_code == requests.codes.ok):
+        return Response("1",status=200,mimetype="application/text")
+    else:
+        return Response("0",status=500,mimetype="application/text")
+
+@app.route('/api/cart', methods=['DELETE'])
+def delete_cart():
+    json = request.get_json()
+    inp={"table": "CART","type": "delete","where": "CONSID = "+json["consid"]+" AND PRODID = "+json["prodid"]}
+    send=requests.post('http://127.0.0.1:5000/api/db/write',json=inp)
+
+    if(send.status_code == requests.codes.ok):
+        return Response("1",status=200,mimetype="application/text")
+    else:
+        return Response("0",status=500,mimetype="application/text")
+
+@app.route('/api/product/<prodid>', methods=['DELETE'])
+def delete_product(prodid):
+    inp={"table": "PRODUCT","type": "delete","where": "PRODID = "+str(prodid)}
+    send=requests.post('http://127.0.0.1:5000/api/db/write',json=inp)
+
+    if(send.status_code == requests.codes.ok):
+        return Response("1",status=200,mimetype="application/text")
+    else:
+        return Response("0",status=500,mimetype="application/text")
+
 @app.route('/api/buy', methods=['POST'])
 def add_sale():
     inp={"table":"CART","columns":["*"],"where":""}

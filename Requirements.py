@@ -52,12 +52,24 @@ def write_db():
             data = data + ",'" + json["data"][iter]+"'"
 
         sql = "INSERT INTO "+json["table"]+"("+columns+") VALUES ("+data+")"
+
     elif(json["type"]=="delete"):
 
         if json["where"]!="":
             sql = "DELETE FROM "+json["table"]+" WHERE "+json["where"]
         else:
             sql = "DELETE FROM "+json["table"]
+
+    elif(json["type"]=="update"):
+
+        sql = "UPDATE "+json["table"]+" SET "+json["columns"][0]+"="+"'"+json["data"][0]+"'"
+        for iter in range(1,len(json["columns"])):
+            sql = sql + "," + json["columns"][iter]+"="+"'"+json["data"][iter]+"'"
+
+        sql = sql + "WHERE "+json["where"]
+
+
+        
 
     cur.execute(sql)
     db.commit()
