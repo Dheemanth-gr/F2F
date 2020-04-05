@@ -33,14 +33,14 @@ def predict(state, district, commodity):
             prices.append(dataset['modal_price'][ind])
     if(len(prices)==0):
         if(commodity in msp):
-            return json.dumps({'wpi':0,'msp':int(msp[commodity])})
+            return json.dumps({'wpi':0,'msp':int(msp[commodity])/100})
         else:
             return json.dumps({'wpi':0,'msp':0})
     else:
         if(commodity in msp):
-            return json.dumps({'wpi':int(mean(prices)),'msp':int(msp[commodity])})
+            return json.dumps({'wpi':int(mean(prices))/100,'msp':int(msp[commodity])/100})
         else:
-            return json.dumps({'wpi':int(mean(prices)),'msp':0})
+            return json.dumps({'wpi':int(mean(prices))/100,'msp':0})
             
 print(predict('Andhra Pradesh','Kurnool','Jowar'))
 print(predict('Haryana','Ambala','Tomato'))
