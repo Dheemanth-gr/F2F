@@ -3,9 +3,9 @@ import pandas as pd
 from statistics import mean
 import json
 
-dataset = pd.read_csv('datafile.csv')
+dataset = pd.read_csv('data/datafile.csv')
 
-msp = {'Paddy':1815,'Jowar':2550,'Bajra':2000,'Maize':1760,'Ragi':3150,'Arhar':5800,'Moong':7050,'Urad':5700,'Cotton':5255,'Groundnut':5090,'Sunflower':5650,'Soyabean':3710,'Sesamum':6485,'Nigerseed':5940,'Wheat':1925,'Barley':1525,'Gram':4875,'Masur':4800,'Mustard':4425,'Safflower':5215,'Copra':9521,'Coconut':2571,'Jute':3950,'Sugarcane':275}
+msp = {'paddy':1815,'jowar':2550,'bajra':2000,'maize':1760,'ragi':3150,'arhar':5800,'moong':7050,'urad':5700,'cotton':5255,'groundnut':5090,'sunflower':5650,'soyabean':3710,'sesamum':6485,'nigerseed':5940,'wheat':1925,'barley':1525,'gram':4875,'masur':4800,'mustard':4425,'safflower':5215,'copra':9521,'coconut':2571,'jute':3950,'sugarcane':275}
 
 def clean(commodity):
     res = ""
@@ -17,11 +17,16 @@ def clean(commodity):
     return res
     
 for ind in dataset.index: 
-    dataset['commodity'][ind] = clean(dataset['commodity'][ind])
+    dataset['commodity'][ind] = clean(dataset['commodity'][ind]).lower()
+    dataset['state'][ind] = dataset['state'][ind].lower()
+    dataset['district'][ind] = dataset['district'][ind].lower()
 print(dataset)
 
 
 def predict(state, district, commodity):
+    state = state.lower()
+    district = district.lower()
+    commodity = commodity.lower()
     prices = []
     for ind in dataset.index:
         if(dataset['state'][ind]==state and dataset['district'][ind]==district and dataset['commodity'][ind]==commodity):
@@ -29,17 +34,13 @@ def predict(state, district, commodity):
     if(len(prices)==0):
         if(commodity in msp):
             return json.dumps({'wpi':0,'msp':int(msp[commodity])})
-            # return json.dumps([0,int(msp[commodity])])
         else:
             return json.dumps({'wpi':0,'msp':0})
-            # return json.dumps([0,0])
     else:
         if(commodity in msp):
             return json.dumps({'wpi':int(mean(prices)),'msp':int(msp[commodity])})
-            # return json.dumps([int(mean(prices)),int(msp[commodity])])
         else:
             return json.dumps({'wpi':int(mean(prices)),'msp':0})
-            # return json.dumps([int(mean(prices)),0])
             
 print(predict('Andhra Pradesh','Kurnool','Jowar'))
 print(predict('Haryana','Ambala','Tomato'))

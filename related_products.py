@@ -3,8 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import json
 
-dataset = pd.read_csv('Market_Basket_Optimisation.csv', header = None) #To make sure the first row is not thought of as the heading
-# print(dataset.shape)
+dataset = pd.read_csv('data/Market_Basket_Optimisation.csv', header = None) 
 
 #Transforming the list into a list of lists, so that each transaction can be indexed easier
 transactions = []
@@ -43,9 +42,10 @@ for itemset in res:
                 
 #print(d)
 
-def related(d,item):
+def related(item):
+    item = item.lower()
     if item not in d:
         return json.dumps([])
     return json.dumps(list(d[item]))
     
-print(related(d,'soup'))
+print(related('Soup'))
