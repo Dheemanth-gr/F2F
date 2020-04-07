@@ -1,7 +1,6 @@
 from flask import Flask,jsonify,request,Response
 import os
 import requests
-import sys
 import price_suggestion as ps
 import related_products as rp
 
@@ -24,6 +23,25 @@ def login():
     else:
         return Response("0",status=204,mimetype="application/text")
 
+@app.route('/api/deals/<num>', methods=['GET'])
+def deals(num):
+
+    inp={"table":"DEALS","columns":["*"],"where":"PRODID>0 ORDER BY DISCOUNT_PERCENT DESC LIMIT "+num}
+    send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
+    data=send.content
+    data=eval(data)
+
+    result = []
+    for deal in data:
+        send=requests.get('http://127.0.0.1:5000/api/product/'+str(deal[1]))
+        res=send.content
+        res=eval(res)
+        res["UNIT_PRICE"]=deal[2]
+        res["DISCOUNT_PERCENT"]=deal[3]
+        result.append(res)
+
+    return jsonify(result)
+
 @app.route('/api/related/<prodid>', methods=['GET'])
 def related_products(prodid):
 
@@ -41,11 +59,11 @@ def related_products(prodid):
         ids=eval(ids)
         for pid in ids:
             send=requests.get('http://127.0.0.1:5000/api/product/'+str(pid[0]))
-            d=send.content
-            d=eval(d)
-            del d["MAXQUANT"]
-            del d["MINBUYQUANT"]
-            result.append(d)
+            res=send.content
+            res=eval(res)
+            del res["MAXQUANT"]
+            del res["MINBUYQUANT"]
+            result.append(res)
 
     return jsonify(result)
 
@@ -53,7 +71,7 @@ def related_products(prodid):
 def predict_price():
     json = request.get_json()
     data = ps.predict(json["state"],json["district"],json["product"])
-    print(data)
+    data=eval(data)
     return jsonify(data)
 
 @app.route('/api/user', methods=['POST'])
@@ -88,6 +106,20 @@ def add_product():
     prodid=eval(prodid)
     inp={"table":"PRODUCT","type":"insert","columns":["PRODID","PRODTITLE","PRODDESC","PRODTYPE","UPLOADTIME","OWNERID","PRICE","MAXQUANT","MINBUYQUANT"],"data":[str(prodid),json["title"],json["desc"],json["type"],R.current_time(),json["ownerid"],json["price"],json["maxquant"],json["minbuyquant"]]}
     send=requests.post('http://127.0.0.1:5000/api/db/write',json=inp)
+
+    price = int(json["price"])/int(json["maxquant"])
+    disc = ps.get_discount(json["title"],int(price))
+    disc=eval(disc)
+    print(disc)
+    if disc:
+        disc=disc[0]
+        print(disc)
+        inp={"table":"DEALS","column":"DEALID"}
+        send=requests.get('http://127.0.0.1:5000/api/GenId',json=inp)
+        dealid=send.content
+        dealid=eval(dealid)
+        inp={"table":"DEALS","type":"insert","columns":["DEALID","PRODID","NEWPRICE","DISCOUNT_PERCENT"],"data":[str(dealid),str(prodid),str(price),str(disc)]}
+        send=requests.post('http://127.0.0.1:5000/api/db/write',json=inp)
 
     if(send.status_code == requests.codes.ok):
         return Response(str(prodid),status=200,mimetype="application/text")
@@ -274,9 +306,9 @@ def complete_search(term):
     result=[]
     for i in data:
         send=requests.get('http://127.0.0.1:5000/api/product/'+str(i))
-        d=send.content
-        d=eval(d)
-        result.append(d[0])
+        res=send.content
+        res=eval(res)
+        result.append(res[0])
     return jsonify(result)
 
 @app.route('/api/cart/<consid>', methods=['GET'])
@@ -290,14 +322,14 @@ def get_cart(consid):
     result=[]
     for i in data:
         send=requests.get('http://127.0.0.1:5000/api/product/'+str(i[0]))
-        d=send.content
-        d=eval(d)
-        d["BUY_Quanity"] = i[1]
-        d["TOTAL_PRICE"] = d["PRICE"] * d["BUY_Quanity"] / d["MAXQUANT"]
-        del d["MAXQUANT"]
-        del d["MINBUYQUANT"]
-        del d["PRICE"]
-        result.append(d)
+        res=send.content
+        res=eval(res)
+        res["BUY_Quanity"] = i[1]
+        res["TOTAL_PRICE"] = res["PRICE"] * res["BUY_Quanity"] / res["MAXQUANT"]
+        del res["MAXQUANT"]
+        del res["MINBUYQUANT"]
+        del res["PRICE"]
+        result.append(res)
     return jsonify(result)
 
 @app.route('/api/product/<prodid>',methods=["GET"])
@@ -361,7 +393,6 @@ def disp_review(prodid):
         user=send.content
         user=eval(user)
         for i in user[0]:
-            print(i)
             data[l].append(i)
 
     for i in range(0,len(data)):

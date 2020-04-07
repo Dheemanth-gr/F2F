@@ -20,7 +20,7 @@ for ind in dataset.index:
     dataset['commodity'][ind] = clean(dataset['commodity'][ind]).lower()
     dataset['state'][ind] = dataset['state'][ind].lower()
     dataset['district'][ind] = dataset['district'][ind].lower()
-print(dataset)
+#print(dataset)
 
 
 def predict(state, district, commodity):
@@ -42,6 +42,18 @@ def predict(state, district, commodity):
         else:
             return json.dumps({'wpi':int(mean(prices))/100,'msp':0})
             
-print(predict('Andhra Pradesh','Kurnool','Jowar'))
-print(predict('Haryana','Ambala','Tomato'))
-print(predict('Madhya Pradesh','Ratlam','Wheat'))
+#print(predict('Andhra Pradesh','Kurnool','Jowar'))
+#print(predict('Haryana','Ambala','Tomato'))
+#print(predict('Madhya Pradesh','Ratlam','Wheat'))
+
+rprices = {"rice":34,"wheat":29,"atta":30,"gram dal":66,"tur dal":87,"urad dal":99,"moong dal":96,"masoor dal":68,"sugar":39,"milk":45,"groundnut oil":137,"mustard oil":118,"vanaspati":89,"soya oil":99,"sunflower oil":108,"palm oil":90,"gur":46,"tea":218,"salt":16,"potato":23,"onion":39,"tomato":22}
+
+def get_discount(prodname, price):
+    print(prodname)
+    print(price)
+    prodname = prodname.lower()
+    list = []
+    if(prodname in rprices and rprices[prodname]>price):
+        #add to db
+        list.append(int(((rprices[prodname]-price)/rprices[prodname])*100))
+    return json.dumps(list)

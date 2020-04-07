@@ -31,7 +31,6 @@ def GenId():
     send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
     data=send.content
     data=eval(data)
-    print(data[0][0])
     if(data[0][0] != None):
         return Response(str(data[0][0]+1),status=200,mimetype="application/text")
     else:
