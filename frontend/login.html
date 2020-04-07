@@ -1,0 +1,532 @@
+<head>
+    <title>F2F</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/open-iconic-bootstrap.min.css">
+    <link rel="stylesheet" href="css/animate.css">
+    
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="css/magnific-popup.css">
+
+    <link rel="stylesheet" href="css/aos.css">
+
+    <link rel="stylesheet" href="css/ionicons.min.css">
+
+    <link rel="stylesheet" href="css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="css/jquery.timepicker.css">
+
+    
+    <link rel="stylesheet" href="css/flaticon.css">
+    <link rel="stylesheet" href="css/icomoon.css">
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body class="goto-here">
+
+	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+	    <div class="container">
+		  <a class="navbar-brand" href="index.html">F2F</a>
+		  <div class="wrap">
+			<div class="search">
+			   <input type="text" class="searchTerm" style="height: 36px;" id="search" placeholder="What are you looking for?" onkeyup="object.getTerm(event)">
+			   <button type="submit" style="height: 36px;" class="searchButton">
+				 <i class="fa fa-search"></i>
+			  </button>
+			</div>
+			<div id="container" style="border:solid 1px black;display:none"></div>
+		 </div>
+	      <div class="collapse navbar-collapse" id="ftco-nav">
+	        <ul class="navbar-nav ml-auto">
+			  <li class="nav-item active"><a href="index.html" class="nav-link">Home</a></li>
+			  <li class="nav-item active"><a href="login.html" class="nav-link">Login</a></li>
+	          <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Farmer ?</a>
+              <div class="dropdown-menu" aria-labelledby="dropdown04">
+                <a class="dropdown-item" href="product-add.html">Add Product</a>
+              </div>
+            </li>
+	          <li class="nav-item cta cta-colored"><a href="cart.html" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
+
+	        </ul>
+	      </div>
+	    </div>
+      </nav>
+      <div style="margin-top:-15px;padding:0 6px;background-color: #fff""><iframe src="https://agmarknet.gov.in/agnew/namticker.aspx" style="width:100%;height:73px;border:none;background-color: #fff"></iframe></div>
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Montserrat|Quicksand');
+
+*{
+    font-family: 'quicksand',Arial, Helvetica, sans-serif;
+    box-sizing: border-box;
+}
+
+body{
+    background:#fff;
+}
+
+.form-modal{
+    position:relative;
+    width:450px;
+    height:auto;
+    margin-top:4em;
+    left:50%;
+    transform:translateX(-50%);
+    background:#fff;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    box-shadow:0 3px 20px 0px rgba(0, 0, 0, 0.1)
+}
+
+.form-modal button{
+    cursor: pointer;
+    position: relative;
+    text-transform: capitalize;
+    font-size:1em;
+    z-index: 2;
+    outline: none;
+    background:#fff;
+    transition:0.2s;
+}
+
+.form-modal .btn{
+    border-radius: 20px;
+    border:none;
+    font-weight: bold;
+    font-size:1.2em;
+    padding:0.8em 1em 0.8em 1em!important;
+    transition:0.5s;
+    border:1px solid #ebebeb;
+    margin-bottom:0.5em;
+    margin-top:0.5em;
+}
+
+.form-modal .login , .form-modal .signup{
+    background:#57b846;
+    color:#fff;
+}
+
+.form-modal .login:hover , .form-modal .signup:hover{
+    background:#222;
+}
+
+.form-toggle{
+    position: relative;
+    width:100%;
+    height:auto;
+}
+
+.form-toggle button{
+    width:50%;
+    float:left;
+    padding:1.5em;
+    margin-bottom:1.5em;
+    border:none;
+    transition: 0.2s;
+    font-size:1.1em;
+    font-weight: bold;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+}
+
+.form-toggle button:nth-child(1){
+    border-bottom-right-radius: 20px;
+}
+
+.form-toggle button:nth-child(2){
+    border-bottom-left-radius: 20px;
+}
+
+#login-toggle{
+    background:#57b846;
+    color:#ffff;
+}
+
+.form-modal form{
+    position: relative;
+    width:90%;
+    height:auto;
+    left:50%;
+    transform:translateX(-50%);  
+}
+
+#login-form , #signup-form{
+    position:relative;
+    width:100%;
+    height:auto;
+    padding-bottom:1em;
+}
+
+#signup-form{
+    display: none;
+}
+
+
+#login-form button , #signup-form button{
+    width:100%;
+    margin-top:0.5em;
+    padding:0.6em;
+}
+
+.form-modal input{
+    position: relative;
+    width:100%;
+    font-size:1em;
+    padding:1.2em 1.7em 1.2em 1.7em;
+    margin-top:0.6em;
+    margin-bottom:0.6em;
+    border-radius: 20px;
+    border:none;
+    background:#ebebeb;
+    outline:none;
+    font-weight: bold;
+    transition:0.4s;
+}
+
+.form-modal input:focus , .form-modal input:active{
+    transform:scaleX(1.02);
+}
+
+.form-modal input::-webkit-input-placeholder{
+    color:#222;
+}
+
+
+.form-modal p{
+    font-size:16px;
+    font-weight: bold;
+}
+
+.form-modal p a{
+    color:#57b846;
+    text-decoration: none;
+    transition:0.2s;
+}
+
+.form-modal p a:hover{
+    color:#222;
+}
+
+
+.form-modal i {
+    position: absolute;
+    left:10%;
+    top:50%;
+    transform:translateX(-10%) translateY(-50%); 
+}
+
+.fa-google{
+    color:#dd4b39;
+}
+
+.fa-linkedin{
+    color:#3b5998;
+}
+
+.fa-windows{
+    color:#0072c6;
+}
+
+.-box-sd-effect:hover{
+    box-shadow: 0 4px 8px hsla(210,2%,84%,.2);
+}
+
+@media only screen and (max-width:500px){
+    .form-modal{
+        width:100%;
+    }
+}
+
+@media only screen and (max-width:400px){
+    i{
+        display: none!important;
+    }
+}
+</style>
+<div class="form-modal">
+    
+    <div class="form-toggle">
+        <button id="login-toggle" onclick="toggleLogin()">log in</button>
+        <button id="signup-toggle" onclick="toggleSignup()">sign up</button>
+    </div>
+
+    <div id="login-form">
+        <form>
+            <input type="text" id="name1" placeholder="Enter email or username"/>
+            <input type="password" id="passwd1" placeholder="Enter password"/>
+            <div id="outcome1"></div>
+            <hr/>
+            <button type="button" class="btn login" onclick="login('consumer')">login as consumer</button>
+            <button type="button" class="btn -box-sd-effect" onclick="login('farmer')"> <i class="fa fa-lg" aria-hidden="true"></i>login as farmer</button>
+            <p><a href="javascript:void(0)">Forgotten account</a></p>
+            
+        </form>
+    </div>
+
+    <div id="signup-form">
+        <form>
+            <input type="text" id="name2" placeholder="Choose username"/>
+            <input type="text" id="city" placeholder="Enter city"/>
+            <input type="text" id="state" placeholder="Enter state"/>
+            <input type="password" id="passwd2" placeholder="Create password"/>
+            <div id="outcome2"></div>
+            <hr/>
+            <button type="button" class="btn signup" onclick="signup('consumer')">Create normal account</button>
+            <button type="button" class="btn -box-sd-effect" onclick="signup('farmer')"> <i class="fa fa-lg" aria-hidden="true"></i>Create Farmer Account</button>
+        </form>
+    </div>
+
+</div>
+
+<footer class="ftco-footer ftco-section">
+    <div class="container">
+      <div class="row mb-5">
+        <div class="col-md">
+          <div class="ftco-footer-widget mb-4 ml-md-5">
+            <h2 class="ftco-heading-2">Menu</h2>
+            <ul class="list-unstyled">
+                <li><a href="about.html" class="py-2 d-block">About</a></li>
+                <li><a href="mailto:www.pes.edu" class="py-2 d-block">Contact Us</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-4">
+           <div class="ftco-footer-widget mb-4">
+            <h2 class="ftco-heading-2">Help</h2>
+            <div class="d-flex">
+                <ul class="list-unstyled mr-l-5 pr-l-3 mr-4">
+                  <li><a href="cart.html" class="py-2 d-block">Shipping Information</a></li>
+                </ul>
+              </div>
+          </div>
+        </div>
+        <div class="col-md">
+          <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">Have a Question ?</h2>
+              <div class="block-23 mb-3">
+                <ul>
+                  <li><span class="icon icon-map-marker"></span><span class="text">100 Feet Ring Road,
+BSK III Stage,
+Bangalore-560085</span></li>
+                  <li><a href="#"><span class="icon icon-phone"></span><span class="text">+91 80 26721983</span></a></li>
+                  <li><a href="#"><span class="icon icon-envelope"></span><span class="text">www.pes.edu</span></a></li>
+                </ul>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+<script src="js/jquery.min.js"></script>
+  <script src="js/jquery-migrate-3.0.1.min.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/jquery.easing.1.3.js"></script>
+  <script src="js/jquery.waypoints.min.js"></script>
+  <script src="js/jquery.stellar.min.js"></script>
+  <script src="js/owl.carousel.min.js"></script>
+  <script src="js/jquery.magnific-popup.min.js"></script>
+  <script src="js/aos.js"></script>
+  <script src="js/jquery.animateNumber.min.js"></script>
+  <script src="js/bootstrap-datepicker.js"></script>
+  <script src="js/scrollax.min.js"></script>
+  <script src="js/main.js"></script>
+  <a id="prod_page" href="product-single.html" style="display: none;"></a>
+  <a id="search_page" href="search_results.html" style="display: none;"></a>
+  <script>
+	  var object ={
+    xhr:new XMLHttpRequest(),
+    getTerm:function(event){
+
+		if (event.keyCode === 13) {
+			localStorage.setItem("search_term",$("#search").val());
+			$("#search_page")[0].click();
+		}
+    
+        object.search = $("#search")[0]; // input text fieldset
+        object.container = $("#container")[0]; //placeholder for food suggestions
+            
+        if(this.timer){
+            console.log("timer cleared");
+            clearTimeout(this.timer);
+        }
+        this.timer = setTimeout(object.sendTerm,1000);
+    },
+    sendTerm:function(){
+        if(localStorage.getItem(object.search.value)){
+            var cacheObj = JSON.parse(localStorage.getItem(object.search.value));
+            console.log("from cache");
+            object.populateFood(cacheObj);
+        } else {
+            object.xhr.onloadend = object.showResult;
+            object.xhr.open("get", "http://127.0.0.1:5000/api/sub/"+object.search.value);
+            object.xhr.responseType="json";
+            object.xhr.send();
+        }
+    },
+    showResult:function(){
+        var resObj = this.response;
+        console.log(this.response)
+        if(resObj==null)
+        {
+            object.search.style.backgroundColor="";
+            object.container.style.display="none";	
+            return;
+        }
+        if(resObj.length==0){
+            object.search.style.backgroundColor="red";
+            object.container.style.display="none";
+        }
+        else{
+            localStorage.setItem(object.search.value, JSON.stringify(resObj));
+            object.search.style.backgroundColor="";
+            object.populateFood(resObj);
+        }
+        
+    },
+    populateFood:function(resO){
+        object.container.innerHTML="";
+        for (var o in resO){
+            var iDiv = document.createElement("div");
+			iDiv.innerHTML = resO[o][0];
+			iDiv.id=resO[o][1];
+			iDiv.onclick=function(){product_page(this.id)}
+            iDiv.className = "fooditem";
+            object.container.appendChild(iDiv);
+        }
+        object.container.style.display="block";
+    }
+};
+function product_page(term)
+{
+	localStorage.setItem("product_id",term);
+	$("#prod_page")[0].click();
+}
+  </script>
+
+
+
+<script>
+    if(localStorage.getItem("toggle"))
+    {
+        toggleSignup();
+        localStorage.removeItem("toggle");
+    }
+    function toggleSignup(){
+    $("#login-toggle")[0].style.backgroundColor="#fff";
+    $("#login-toggle")[0].style.color="#222";
+    $("#signup-toggle")[0].style.backgroundColor="#57b846";
+    $("#signup-toggle")[0].style.color="#fff";
+    $("#login-form")[0].style.display="none";
+    $("#signup-form")[0].style.display="block";
+}
+
+function toggleLogin(){
+    $("#login-toggle")[0].style.backgroundColor="#57B846";
+    $("#login-toggle")[0].style.color="#fff";
+    $("#signup-toggle")[0].style.backgroundColor="#fff";
+    $("#signup-toggle")[0].style.color="#222";
+    $("#signup-form")[0].style.display="none";
+    $("#login-form")[0].style.display="block";
+}
+
+
+function login(t)
+{
+    if($("#name1").val()=="" )
+    {
+        $("#outcome1")[0].style.color="red";
+        $("#outcome1").html("please enter name")
+        return;
+    }
+    if($("#passwd1").val()=="")
+    {
+        $("#outcome1")[0].style.color="red";
+        $("#outcome1")[0].innerHTML="please enter password"
+        return;        
+    }
+    obj={"name":$("#name1").val(),"passwd":$("#passwd1").val(),"type":t};
+    $.ajax({
+        url: "http://127.0.0.1:5000/api/login",
+        data: JSON.stringify(obj),
+        method:"POST",
+        contentType: "application/json",
+        success: function(data, textStatus, jqXHR){
+                    if(jqXHR.status==200)
+                    {
+                        $("#outcome1")[0].style.color="green";
+                        data=data.split(",");
+                        $("#outcome1").html(data[0]);
+                        var O={"type":data[1],"id":data[2],"name":data[3],"city":data[4],"state":data[5]};
+                        localStorage.setItem("details",JSON.stringify(O) );
+                    }
+                    else
+                    {
+                        $("#outcome1")[0].style.color="red";
+                        $("#outcome1")[0].innerHTML = data;
+                    }
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+                    console.log(textStatus + ": " + jqXHR.status + " " + errorThrown);
+        }
+    });
+}
+
+function signup(t)
+{
+    if($("#name2").val()=="" )
+    {
+        $("#outcome2")[0].style.color="red";
+        $("#outcome2")[0].innerHTML="please enter name"
+        return;
+    }
+    if($("#passwd2").val()=="")
+    {
+        $("#outcome2")[0].style.color="red";
+        $("#outcome2").html("please enter password")
+        return;        
+    }
+    if($("#city").val()=="")
+    {
+        $("#outcome2")[0].style.color="red";
+        $("#outcome2").html("please enter city")
+        return;        
+    }
+    if($("#state").val()=="")
+    {
+        $("#outcome2")[0].style.color="red";
+        $("#outcome2").html("please enter state")
+        return;        
+    }
+    obj={"name":$("#name2").val(),"passwd":$("#passwd2").val(),"loc":$("#city").val()+","+$("#state").val(),"type":t};
+    $.ajax({
+        url: "http://127.0.0.1:5000/api/user",
+        data: JSON.stringify(obj),
+        method:"POST",
+        contentType: "application/json",
+        success: function(data, textStatus, jqXHR){
+                    if(jqXHR.status==200)
+                    {
+                        $("#outcome2")[0].style.color="green";
+                        $("#outcome2").html(data);
+                    }
+                    else
+                    {
+                        $("#outcome2")[0].style.color="red";
+                        $("#outcome2").html(data);
+                    }
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+                    console.log(textStatus + ": " + jqXHR.status + " " + errorThrown);
+        }
+    });
+}
+
+
+
+</script>

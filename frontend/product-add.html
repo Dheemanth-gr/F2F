@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>F2F</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/open-iconic-bootstrap.min.css">
+    <link rel="stylesheet" href="css/animate.css">
+    
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="css/magnific-popup.css">
+
+    <link rel="stylesheet" href="css/aos.css">
+
+    <link rel="stylesheet" href="css/ionicons.min.css">
+
+    <link rel="stylesheet" href="css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="css/jquery.timepicker.css">
+
+    
+    <link rel="stylesheet" href="css/flaticon.css">
+    <link rel="stylesheet" href="css/icomoon.css">
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body class="goto-here">
+	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+	    <div class="container">
+		  <a class="navbar-brand" href="index.html">F2F</a>
+		  <div class="wrap">
+			<div class="search">
+			   <input type="text" class="searchTerm" style="height: 45%;" id="search" placeholder="What are you looking for?" onkeyup="object.getTerm(event)">
+			   <button type="submit" class="searchButton">
+				 <i class="fa fa-search"></i>
+			  </button>
+			</div>
+			<div id="container" style="border:solid 1px black;display:none"></div>
+		 </div>
+	      <div class="collapse navbar-collapse" id="ftco-nav">
+	        <ul class="navbar-nav ml-auto">
+			  <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+			  <li class="nav-item"><a href="login.html" class="nav-link">Login</a></li>
+	          <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Farmer ?</a>
+              <div class="dropdown-menu" aria-labelledby="dropdown04">
+                <a class="dropdown-item" href="product-add.html">Add Product</a>
+              </div>
+            </li>
+	          <li class="nav-item cta cta-colored"><a href="cart.html" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
+
+	        </ul>
+	      </div>
+	    </div>
+	  </nav>
+	  <div style="margin-top:-15px;padding:0 6px;"><iframe src="https://agmarknet.gov.in/agnew/namticker.aspx" style="width:100%;height:73px;border:none;"></iframe></div>
+    <div class="hero-wrap hero-bread" style="background-image: url('images/bg_1.jpg');">
+      <div class="container">
+        <div class="row no-gutters slider-text align-items-center justify-content-center">
+          <div class="col-md-9 ftco-animate text-center">
+			<h1 class="mb-0 bread">Product Add</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="ftco-section">
+    	<div class="container">
+    		<div class="row">
+    			<div class="col-lg-6 mb-5 ftco-animate">
+					<div>
+						<form action="" method="post" enctype="multipart/form-data" id="myform">
+							<input type="file" id="file1" class="file-upload" name="image" accept="image/*" capture style="display:none"/>
+							
+						</form>
+
+					</div>
+					<img src="images/default.png" id="upfile1" class="img-fluid" style="cursor:pointer" alt="Colorlib Template">
+					
+				</div>
+    			<div class="col-lg-6 product-details pl-md-5 ftco-animate">
+					<input type="text" id="title" onchange="price_suggest(this.value)" class="form-control-lg" placeholder="Title"><br><br>
+					<br>
+					<div class="row">
+						<div class="col-md-12 mb-5">
+						Categories :
+						</div>
+						<div class="col-md-12 mb-5 text-center">
+							<ul class="product-category">
+								<li><a id="vegetable" class="active" onclick="select_active(this.id)">Vegetables</a></li>
+								<li><a id="fruit" onclick="select_active(this.id)">Fruits</a></li>
+								<li><a id="grain" onclick="select_active(this.id)">Grains</a></li>
+								<li><a id="dried" onclick="select_active(this.id)">Dried</a></li>
+							</ul>
+						</div>
+					</div>
+					<input type="text" class="form-control-lg" id="price" placeholder="Price "><br><br>
+
+    				<textarea class="form-control-lg" style="width: 500px;height: 200px;" placeholder="Description" id="desc"></textarea>
+						<div class="row mt-4">
+
+							<div class="w-100"></div>
+	          				<div class="w-100"></div>
+	          				<div class="col-md-12">
+	          					<p style="color: #000;"><input type="text" class="form-control-lg" id="maxquant" placeholder="600">  kg available</p>
+							</div>
+							<div class="col-md-12">
+								<p style="color: #000;"><input type="text" class="form-control-lg" id="minbuyquant" placeholder="600"> Minimum buy quantity (kg) </p>
+							</div>  
+			  			</div>
+			  		<br>
+					<a class="btn btn-primary py-3 px-4" id="submit_" href="#" onclick="add_product(event)">Add to Catalogue</a>
+    			</div>
+    		</div>
+    	</div>
+    </section>
+
+
+    <footer class="ftco-footer ftco-section">
+		<div class="container">
+			<div class="row">
+				<div class="mouse">
+						  <a href="#" class="mouse-icon">
+							  <div class="mouse-wheel"><span class="ion-ios-arrow-up"></span></div>
+						  </a>
+					  </div>
+			</div>
+		  <div class="row mb-5">
+			<div class="col-md">
+			  <div class="ftco-footer-widget mb-4 ml-md-5">
+				<h2 class="ftco-heading-2">Menu</h2>
+				<ul class="list-unstyled">
+					<li><a href="about.html" class="py-2 d-block">About</a></li>
+					<li><a href="mailto:www.pes.edu" class="py-2 d-block">Contact Us</a></li>
+				</ul>
+			  </div>
+			</div>
+			<div class="col-md-4">
+			   <div class="ftco-footer-widget mb-4">
+				<h2 class="ftco-heading-2">Help</h2>
+				<div class="d-flex">
+					<ul class="list-unstyled mr-l-5 pr-l-3 mr-4">
+					  <li><a href="cart.html" class="py-2 d-block">Shipping Information</a></li>
+					</ul>
+				  </div>
+			  </div>
+			</div>
+			<div class="col-md">
+			  <div class="ftco-footer-widget mb-4">
+				  <h2 class="ftco-heading-2">Have a Question ?</h2>
+				  <div class="block-23 mb-3">
+					<ul>
+					  <li><span class="icon icon-map-marker"></span><span class="text">100 Feet Ring Road,
+  BSK III Stage,
+  Bangalore-560085</span></li>
+					  <li><a href="#"><span class="icon icon-phone"></span><span class="text">+91 80 26721983</span></a></li>
+					  <li><a href="#"><span class="icon icon-envelope"></span><span class="text">www.pes.edu</span></a></li>
+					</ul>
+				  </div>
+			  </div>
+			</div>
+		  </div>
+		</div>
+	  </footer>
+	  
+	
+  
+	<!-- loader -->
+	<div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+  <a id="prod_page" href="product-single.html" style="display: none;"></a>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/jquery-migrate-3.0.1.min.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.easing.1.3.js"></script>
+<script src="js/jquery.waypoints.min.js"></script>
+<script src="js/jquery.stellar.min.js"></script>
+<script src="js/owl.carousel.min.js"></script>
+<script src="js/jquery.magnific-popup.min.js"></script>
+<script src="js/aos.js"></script>
+<script src="js/jquery.animateNumber.min.js"></script>
+<script src="js/bootstrap-datepicker.js"></script>
+<script src="js/scrollax.min.js"></script>
+<script src="js/main.js"></script>
+
+<script>
+
+	function price_suggest(title)
+	{
+		
+		if(localStorage.getItem("details")==null)
+			return;
+		O=JSON.parse(localStorage.getItem("details"));
+		obj=JSON.stringify({"district":O["city"],"state":O["state"],"product":title})
+		$.ajax({
+			url: 'http://127.0.0.1:5000/api/price',
+			method:"POST",
+			data:obj,
+			contentType: "application/json",
+			success: function(response){
+				
+				if(response !=null){
+					response=JSON.parse(response)
+					var price=$("#price")[0];
+					price.value=Math.max(parseInt(response["wpi"]),parseInt(response["msp"]));
+					var recom=Math.max(parseInt(response["wpi"]),parseInt(response["msp"]));
+					price.placeholder+=" : "+recom.toString();
+				}
+			},
+		});	
+	}
+
+	function select_active(id)
+	{
+		x=document.getElementsByClassName("active");
+		x[0].className=""
+		$("#"+id)[0].className="active";
+	}
+
+	$(document).ready(function(){
+
+	var quantitiy=0;
+		$('.quantity-right-plus').click(function(e){
+			
+			// Stop acting like a button
+			e.preventDefault();
+			// Get the field name
+			var quantity = parseInt($('#quantity').val());
+			
+			// If is not undefined
+				
+				$('#quantity').val(quantity + 1);
+
+				
+				// Increment
+			
+		});
+
+			$('.quantity-left-minus').click(function(e){
+			// Stop acting like a button
+			e.preventDefault();
+			// Get the field name
+			var quantity = parseInt($('#quantity').val());
+			
+			// If is not undefined
+			
+				// Increment
+				if(quantity>0){
+				$('#quantity').val(quantity - 1);
+				}
+		});
+		
+	});
+	var readURL = function(input) {
+		if (input.files && input.files[0]) {
+				var reader = new FileReader();
+
+				reader.onload = function (e) {
+						$('.profile-pic').attr('src', e.target.result);
+				}
+
+				reader.readAsDataURL(input.files[0]);
+		}
+	}
+
+
+	$(".file-upload").on('change', function(){
+			readURL(this);
+	});
+
+	$(".upload-button").on('click', function() {
+		$(".file-upload").click();
+	});
+	var input = document.querySelector('input[type=file]'); 
+
+	input.onchange = function () {
+		var file = input.files[0];
+
+		displayAsImage(file); 
+	};
+
+
+
+	function displayAsImage(file) {
+		var imgURL = URL.createObjectURL(file),
+		
+		img = document.getElementById('upfile1');
+
+		img.onload = function() {
+			URL.revokeObjectURL(imgURL);
+		};
+
+		img.src = imgURL;
+	}
+
+	$("#upfile1").click(function () {
+		$("#file1").trigger('click');
+	});
+
+
+	function add_product(e) {
+		var files = $('#file1')[0].files[0];
+		if(files==undefined)
+		{
+			alert("add product image !")
+			return;
+		}
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+					data=this.responseText.split(",")
+					alert(data[0]);
+					add_image(data[1]);
+			}
+			if (this.readyState == 4 && this.status == 201) {
+					alert(this.responseText);
+			}
+		};
+		xhttp.open("POST", "http://127.0.0.1:5000/api/product", true);
+		if(localStorage.getItem("details")==null)
+		{
+			alert("Please login !")
+			return;
+		}
+		if(JSON.parse(localStorage.getItem("details"))["type"]=="consumer")
+		{
+			alert("Please login as farmer !");
+			return;
+		}
+		obj={"title":$("#title").val(),"desc":$("#desc").val(),"type":document.getElementsByClassName("active")[0].innerHTML,"ownerid":JSON.parse(localStorage.getItem("details"))["id"],"price":$("#price").val(),"maxquant":$("#maxquant").val(),"minbuyquant":$("#minbuyquant").val()};
+		xhttp.send(JSON.stringify(obj));
+	}
+	function add_image(img_id)
+	{
+		var fd = new FormData();
+		var files = $('#file1')[0].files[0];
+		if(files==undefined)
+		{
+			alert("add product image !")
+			return;
+		}
+		fd.append('new_name',$('#fid').text())
+		fd.append('file',files);
+		$.ajax({
+			url: 'http://127.0.0.1:5000/api/image/'+img_id,
+			type: 'post',
+			data: fd,
+			contentType: false,
+			processData: false,
+			success: function(response){
+				if(response != 0){
+					console.log(response);
+					product_page(data[2]);
+				}else{
+					alert('file not uploaded');
+				}
+			},
+		});	
+	}
+	function product_page(term)
+	{
+		localStorage.setItem("product_id",term);
+		$("#prod_page")[0].click();
+	}
+</script>
+
+<a id="search_page" href="search_results.html" style="display: none;"></a>
+<script>
+	var object ={
+  xhr:new XMLHttpRequest(),
+  getTerm:function(event){
+
+	  if (event.keyCode === 13) {
+		  localStorage.setItem("search_term",$("#search").val());
+		  $("#search_page")[0].click();
+	  }
+  
+	  object.search = $("#search")[0]; // input text fieldset
+	  object.container = $("#container")[0]; //placeholder for food suggestions
+		  
+	  if(this.timer){
+		  console.log("timer cleared");
+		  clearTimeout(this.timer);
+	  }
+	  this.timer = setTimeout(object.sendTerm,1000);
+  },
+  sendTerm:function(){
+	  if(localStorage.getItem(object.search.value)){
+		  var cacheObj = JSON.parse(localStorage.getItem(object.search.value));
+		  console.log("from cache");
+		  object.populateFood(cacheObj);
+	  } else {
+		  object.xhr.onloadend = object.showResult;
+		  object.xhr.open("get", "http://127.0.0.1:5000/api/sub/"+object.search.value);
+		  object.xhr.responseType="json";
+		  object.xhr.send();
+	  }
+  },
+  showResult:function(){
+	  var resObj = this.response;
+	  console.log(this.response)
+	  if(resObj==null)
+	  {
+		  object.search.style.backgroundColor="";
+		  object.container.style.display="none";	
+		  return;
+	  }
+	  if(resObj.length==0){
+		  object.search.style.backgroundColor="red";
+		  object.container.style.display="none";
+	  }
+	  else{
+		  localStorage.setItem(object.search.value, JSON.stringify(resObj));
+		  object.search.style.backgroundColor="";
+		  object.populateFood(resObj);
+	  }
+	  
+  },
+  populateFood:function(resO){
+	  object.container.innerHTML="";
+	  for (var o in resO){
+		  var iDiv = document.createElement("div");
+		  iDiv.innerHTML = resO[o][0];
+		  iDiv.id=resO[o][1];
+		  iDiv.onclick=function(){product_page(this.id)}
+		  iDiv.className = "fooditem";
+		  object.container.appendChild(iDiv);
+	  }
+	  object.container.style.display="block";
+  }
+};
+function product_page(term)
+{
+  localStorage.setItem("product_id",term);
+  $("#prod_page")[0].click();
+}
+</script>
+  </body>
+</html>

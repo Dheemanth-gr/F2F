@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>F2F</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/open-iconic-bootstrap.min.css">
+    <link rel="stylesheet" href="css/animate.css">
+    
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="css/magnific-popup.css">
+
+    <link rel="stylesheet" href="css/aos.css">
+
+    <link rel="stylesheet" href="css/ionicons.min.css">
+
+    <link rel="stylesheet" href="css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="css/jquery.timepicker.css">
+
+    
+    <link rel="stylesheet" href="css/flaticon.css">
+    <link rel="stylesheet" href="css/icomoon.css">
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body class="goto-here">
+    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+	    <div class="container">
+		  <a class="navbar-brand" href="index.html">F2F</a>
+		  <div class="wrap">
+			<div class="search">
+			   <input type="text" class="searchTerm" style="height: 45%;" id="search" placeholder="What are you looking for?" onkeyup="object.getTerm(event)">
+			   <button type="submit" class="searchButton">
+				 <i class="fa fa-search"></i>
+			  </button>
+			</div>
+			<div id="container" style="border:solid 1px black;display:none"></div>
+		 </div>
+	      <div class="collapse navbar-collapse" id="ftco-nav">
+	        <ul class="navbar-nav ml-auto">
+			  <li class="nav-item active"><a href="index.html" class="nav-link">Home</a></li>
+			  <li class="nav-item active"><a href="login.html" class="nav-link">Login</a></li>
+	          <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Farmer ?</a>
+              <div class="dropdown-menu" aria-labelledby="dropdown04">
+                <a class="dropdown-item" href="product-add.html">Add Product</a>
+              </div>
+            </li>
+	          <li class="nav-item cta cta-colored"><a href="cart.html" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
+
+	        </ul>
+	      </div>
+	    </div>
+	  </nav>
+	  <div style="margin-top:-15px;padding:0 6px;"><iframe src="https://agmarknet.gov.in/agnew/namticker.aspx" style="width:100%;height:73px;border:none;"></iframe></div>
+    <div class="hero-wrap hero-bread" style="background-image: url('images/bg_1.jpg');">
+      <div class="container">
+        <div class="row no-gutters slider-text align-items-center justify-content-center">
+          <div class="col-md-9 ftco-animate text-center">
+          	<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span>Cart</span></p>
+            <h1 class="mb-0 bread">My Cart</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="ftco-section ftco-cart">
+			<div class="container" id="add_here">
+			</div>
+	</section>
+
+
+	<footer class="ftco-footer ftco-section">
+		<div class="container">
+			<div class="row">
+				<div class="mouse">
+						  <a href="#" class="mouse-icon">
+							  <div class="mouse-wheel"><span class="ion-ios-arrow-up"></span></div>
+						  </a>
+					  </div>
+			</div>
+		  <div class="row mb-5">
+			<div class="col-md">
+			  <div class="ftco-footer-widget mb-4 ml-md-5">
+				<h2 class="ftco-heading-2">Menu</h2>
+				<ul class="list-unstyled">
+					<li><a href="about.html" class="py-2 d-block">About</a></li>
+					<li><a href="mailto:www.pes.edu" class="py-2 d-block">Contact Us</a></li>
+				</ul>
+			  </div>
+			</div>
+			<div class="col-md-4">
+			   <div class="ftco-footer-widget mb-4">
+				<h2 class="ftco-heading-2">Help</h2>
+				<div class="d-flex">
+					<ul class="list-unstyled mr-l-5 pr-l-3 mr-4">
+					  <li><a href="#state" class="py-2 d-block">Shipping Information</a></li>
+					</ul>
+				  </div>
+			  </div>
+			</div>
+			<div class="col-md">
+			  <div class="ftco-footer-widget mb-4">
+				  <h2 class="ftco-heading-2">Have a Question ?</h2>
+				  <div class="block-23 mb-3">
+					<ul>
+					  <li><span class="icon icon-map-marker"></span><span class="text">100 Feet Ring Road,
+  BSK III Stage,
+  Bangalore-560085</span></li>
+					  <li><a href="#"><span class="icon icon-phone"></span><span class="text">+91 80 26721983</span></a></li>
+					  <li><a href="#"><span class="icon icon-envelope"></span><span class="text">www.pes.edu</span></a></li>
+					</ul>
+				  </div>
+			  </div>
+			</div>
+		  </div>
+		</div>
+	  </footer>
+	  
+	
+  
+	<!-- loader -->
+	<div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+
+  <script src="js/jquery.min.js"></script>
+  <script src="js/jquery-migrate-3.0.1.min.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/jquery.easing.1.3.js"></script>
+  <script src="js/jquery.waypoints.min.js"></script>
+  <script src="js/jquery.stellar.min.js"></script>
+  <script src="js/owl.carousel.min.js"></script>
+  <script src="js/jquery.magnific-popup.min.js"></script>
+  <script src="js/aos.js"></script>
+  <script src="js/jquery.animateNumber.min.js"></script>
+  <script src="js/bootstrap-datepicker.js"></script>
+  <script src="js/scrollax.min.js"></script>
+  <script src="js/main.js"></script>
+
+  <script>
+		$(document).ready(function(){
+
+		var quantitiy=0;
+		   $('.quantity-right-plus').click(function(e){
+		        
+		        // Stop acting like a button
+		        e.preventDefault();
+		        // Get the field name
+		        var quantity = parseInt($('#quantity').val());
+		        
+		        // If is not undefined
+		            
+		            $('#quantity').val(quantity + 1);
+
+		          
+		            // Increment
+		        
+		    });
+
+		     $('.quantity-left-minus').click(function(e){
+		        // Stop acting like a button
+		        e.preventDefault();
+		        // Get the field name
+		        var quantity = parseInt($('#quantity').val());
+		        
+		        // If is not undefined
+		      
+		            // Increment
+		            if(quantity>0){
+		            $('#quantity').val(quantity - 1);
+		            }
+		    });
+		    
+		});
+		id=0
+		fill_cart()
+		function fill_cart()
+		{
+			row_adder=init_cart($("#add_here")[0]);
+			if(localStorage.getItem("details")==null)
+			{
+				alert("Please login !")
+				return;
+			}
+			O=JSON.parse(localStorage.getItem("details"))
+			$.ajax({
+				url: "http://127.0.0.1:5000/api/cart/"+O.id,
+				method:"GET",
+				contentType: "application/json",
+				success: function(data, textStatus, jqXHR){
+							if(jqXHR.status==200)
+							{
+								if(data.length==0)
+								{
+									row_adder.innerHTML="<tr><td class='price'></td><td class='price'></td><td class='price'></td><td class='price'><center>Cart Empty</center></td><td class='price'></td><td class='price'></td></tr>";
+									return;
+								}
+								for(var i=0;i<data.length;i++)
+								{
+									var imgage_url=data[i]["IMAGES"][0]["IMAGEPATH"]
+									var title=data[i]["PRODTITLE"]
+									var desc=data[i]["PRODDESC"]
+									var price= data[i]["PRICE"]
+									var quant=data[i]["BUY_Quanity"]
+									var prodid=data[i]["PRODID"]
+									add_row(row_adder,imgage_url,title,desc,price,quant,prodid);
+								}
+								insert_totalling();
+								find_cart_total();
+							}
+							else
+								alert("could not add to cart. please try later !")
+				},
+				error: function(jqXHR, textStatus, errorThrown){
+							console.log(textStatus + ": " + jqXHR.status + " " + errorThrown);
+				}
+			});
+			return false;
+		}
+		function insert_totalling()
+		{
+			var h = $("#add_here")[0];
+			htmlstr="<div class='row justify-content-end'><div class='col-lg-4 mt-5 cart-wrap'><div class='cart-total mb-3'><h3>Estimate shipping and tax</h3><p>Enter your destination to get a shipping estimate</p><form action='#' class='info'><div class='form-group'><label for='state'>State</label><select class='form-control' id='state'><option value='50'>Karnataka</option><option value='100'>Maharashtra</option><option value='80'>Andhra Pradesh</option><option value='80'>Telangana</option><option value='100'>Goa</option><option value='100'>Kerala</option><option value='80'>Tamil Nadu</option></select></div>"
+			htmlstr+="<div class='form-group'><label for='zipcode'>Zip/Postal Code</label><input type='text' class='form-control text-left px-3' placeholder=''></div></form></div><p><a href='#dil_total' class='btn btn-primary py-3 px-4' onclick='estimate_delivery()'>Estimate</a></p></div><div class='col-lg-4 mt-5 cart-wrap'><div class='cart-total mb-3'><h3>Cart Totals</h3><p class='d-flex'><span>Subtotal</span><span id='cart_total'>0</span></p><p class='d-flex'><span>Delivery</span><span id='dil_total'>0</span></p><hr><p class='d-flex total-price'><span>Total</span><span id='total'>0</span></p></div><p><a href='#' onclick='checkout_page()' class='btn btn-primary py-3 px-4'>Proceed to Checkout</a></p></div></div>";
+			h.insertAdjacentHTML("beforeend", htmlstr);
+		}
+		function init_cart()
+		{
+			var cart=document.createElement("div");
+			cart.className="cart-list";
+			var table=document.createElement("table");
+			table.className="table";
+			table.id="cartTable"
+			var thead=document.createElement("thead");
+			thead.className="thead-primary";
+			thead.innerHTML="<tr class='text-center'><th>&nbsp;</th><th>&nbsp;</th><th>Product name</th><th>Price (Rs) </th><th>Quantity</th><th>Total (Rs)</th></tr>"
+			table.appendChild(thead);
+			var tbody=document.createElement("tbody");
+			table.appendChild(tbody);
+			cart.appendChild(table);
+			inner_div=document.createElement("div");
+			inner_div.className="col-md-12 ftco-animate fadeInUp ftco-animated";
+			inner_div.appendChild(cart);
+			row=document.createElement("div");
+			row.className="row";
+			row.appendChild(inner_div);
+			row.id="table_here"
+			$("#add_here")[0].insertBefore(row,$("#add_here")[0].childNodes[0]);
+
+			return tbody;
+		}
+		function add_row(tbody,imgage_url,title,desc,price,quantity,prodid)
+		{
+			row=document.createElement("tr");
+			row.className="text-center";
+			row.innerHTML="<td class='product-remove'><a href='#'' id='"+id+"' onclick='delete_row(this.id)'><span class='ion-ios-close'></span></a></td> <td class='image-prod'><div class='img' style='background-image:url("+imgage_url+")';></div></td> <td class='product-name'><h3>"+title+"</h3><p>"+desc+"</p></td> <td class='price' id='p"+id+"' >"+price+"</td><td class='quantity'><div class='input-group mb-3'><input type='text' id='q"+id+"' onchange='update_row_total(this.id)' name='quantity' class='quantity form-control input-number' value='"+quantity+"' min='1' max='100'><div style='display:none;' id='prod_"+id+"'>"+prodid+"</div></div></td><td class='total' id='t"+id+"'>"+price*quantity+"</td>"
+			id+=1
+			tbody.appendChild(row)
+		}
+		function update_row_total(qid)
+		{
+			quantity=$("#q"+qid.charAt(qid.length-1)).val()
+			if(quantity==0)
+			{
+				delete_row(qid.charAt(qid.length-1));
+				return;
+			}
+			if(localStorage.getItem("details")==null)
+			{
+				alert("Please login !")
+				return;
+			}
+			O=JSON.parse(localStorage.getItem("details"))
+			obj={"consid":O.id,"prodid":$("#prod_"+qid.charAt(qid.length-1)).html(),"quantity":quantity}
+			$.ajax({
+				url: "http://127.0.0.1:5000/api/cart",
+				data: JSON.stringify(obj),
+				method:"PUT",
+				contentType: "application/json",
+				success: function(data, textStatus, jqXHR){
+							if(jqXHR.status==200)
+							{
+								price=$("#p"+qid.charAt(qid.length-1)).html()
+								var old_row_total=$("#t"+qid.charAt(qid.length-1)).html()
+								$("#t"+qid.charAt(qid.length-1)).html(price*quantity)
+								var old_cart_total=$("#cart_total").html()
+								$("#cart_total").html(old_cart_total*1-old_row_total*1+price*quantity)
+								var old_total = $("#total").html();
+								$("#total").html(old_total*1-old_row_total*1+price*quantity)
+								return;
+							}
+							else
+							{
+								alert(data);
+								location.reload();
+							}
+				},
+				error: function(jqXHR, textStatus, errorThrown){
+							console.log(textStatus + ": " + jqXHR.status + " " + errorThrown);
+				}
+			});
+		}
+		function delete_row(row_id)
+		{
+			if(localStorage.getItem("details")==null)
+			{
+				alert("Please login !")
+				return;
+			}
+			O=JSON.parse(localStorage.getItem("details"))
+			obj={"consid":O.id,"prodid":$("#prod_"+row_id).html()}
+			$.ajax({
+				url: "http://127.0.0.1:5000/api/cart",
+				data: JSON.stringify(obj),
+				method:"DELETE",
+				contentType: "application/json",
+				success: function(data, textStatus, jqXHR){
+							if(jqXHR.status==200)
+							{
+								$("#cartTable")[0].deleteRow(row_id*1+1);
+								id-=1
+								find_cart_total();
+								if(id==0)
+								{
+									row_adder.innerHTML="<tr><td class='price'></td><td class='price'></td><td class='price'></td><td class='price'><center>Cart Empty</center></td><td class='price'></td><td class='price'></td></tr>";
+									$("#dil_total").html(0);
+									$("#total").html(0);
+								}
+							}
+							else
+								alert("could not update cart. please try later !")
+				},
+				error: function(jqXHR, textStatus, errorThrown){
+							console.log(textStatus + ": " + jqXHR.status + " " + errorThrown);
+				}
+			});
+		}
+
+		function find_cart_total()
+		{
+			var x = $("#cartTable")[0].rows.length;
+			var old_sub_tot=$("#cart_total").html()	
+			var old_tot=$("#total").html()
+			var sub_tot=0;
+			for(var i=0;i<x-1;i++)
+			{
+				sub_tot+=$("#t"+i).html()*1;
+			}
+			$("#cart_total").html(sub_tot);
+			$("#total").html(old_tot*1-old_sub_tot*1+sub_tot*1);
+		}
+
+		function estimate_delivery()
+		{
+			dil_total=$("#dil_total")[0]
+			var e = $("#state")[0];
+			var sel_value = e.options[e.selectedIndex].value;
+			dil_total.innerHTML=sel_value*1;
+			var old_val=$("#total").html()*1;
+			$("#total").html(old_val+sel_value*1);
+		}
+	</script>
+	  <a id="prod_page" href="product-single.html" style="display: none;"></a>
+	  <a id="search_page" href="search_results.html" style="display: none;"></a>
+	  <a id="check_out_page" href="checkout.html" style="display: none;"></a>
+	  <script>
+		  var object ={
+		xhr:new XMLHttpRequest(),
+		getTerm:function(event){
+	
+			if (event.keyCode === 13) {
+				localStorage.setItem("search_term",$("#search").val());
+				$("#search_page")[0].click();
+			}
+		
+			object.search = $("#search")[0]; // input text fieldset
+			object.container = $("#container")[0]; //placeholder for food suggestions
+				
+			if(this.timer){
+				console.log("timer cleared");
+				clearTimeout(this.timer);
+			}
+			this.timer = setTimeout(object.sendTerm,1000);
+		},
+		sendTerm:function(){
+			if(localStorage.getItem(object.search.value)){
+				var cacheObj = JSON.parse(localStorage.getItem(object.search.value));
+				console.log("from cache");
+				object.populateFood(cacheObj);
+			} else {
+				object.xhr.onloadend = object.showResult;
+				object.xhr.open("get", "http://127.0.0.1:5000/api/sub/"+object.search.value);
+				object.xhr.responseType="json";
+				object.xhr.send();
+			}
+		},
+		showResult:function(){
+			var resObj = this.response;
+			console.log(this.response)
+			if(resObj==null)
+			{
+				object.search.style.backgroundColor="";
+				object.container.style.display="none";	
+				return;
+			}
+			if(resObj.length==0){
+				object.search.style.backgroundColor="red";
+				object.container.style.display="none";
+			}
+			else{
+				localStorage.setItem(object.search.value, JSON.stringify(resObj));
+				object.search.style.backgroundColor="";
+				object.populateFood(resObj);
+			}
+			
+		},
+		populateFood:function(resO){
+			object.container.innerHTML="";
+			for (var o in resO){
+				var iDiv = document.createElement("div");
+				iDiv.innerHTML = resO[o][0];
+				iDiv.id=resO[o][1];
+				iDiv.onclick=function(){product_page(this.id)}
+				iDiv.className = "fooditem";
+				object.container.appendChild(iDiv);
+			}
+			object.container.style.display="block";
+		}
+	};
+	function product_page(term)
+	{
+		localStorage.setItem("product_id",term);
+		$("#prod_page")[0].click();
+	}
+	function checkout_page()
+	{
+		localStorage.setItem("cart_subtotal",$("#cart_total").html());
+		localStorage.setItem("dil_subtotal",$("#dil_total").html());
+		$("#check_out_page")[0].click();
+		return false;
+	}
+	  </script>
+  </body>
+</html>

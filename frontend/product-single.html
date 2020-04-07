@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>F2F</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/open-iconic-bootstrap.min.css">
+    <link rel="stylesheet" href="css/animate.css">
+    
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="css/magnific-popup.css">
+
+    <link rel="stylesheet" href="css/aos.css">
+
+    <link rel="stylesheet" href="css/ionicons.min.css">
+
+    <link rel="stylesheet" href="css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="css/jquery.timepicker.css">
+
+    
+    <link rel="stylesheet" href="css/flaticon.css">
+    <link rel="stylesheet" href="css/icomoon.css">
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body class="goto-here">
+    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+	    <div class="container">
+		  <a class="navbar-brand" href="index.html">F2F</a>
+		  <div class="wrap">
+			<div class="search">
+			   <input type="text" class="searchTerm" style="height: 45%;" id="search" placeholder="What are you looking for?" onkeyup="object.getTerm(event)">
+			   <button type="submit" class="searchButton">
+				 <i class="fa fa-search"></i>
+			  </button>
+			</div>
+			<div id="container" style="border:solid 1px black;display:none"></div>
+		 </div>
+	      <div class="collapse navbar-collapse" id="ftco-nav">
+	        <ul class="navbar-nav ml-auto">
+			  <li class="nav-item active"><a href="index.html" class="nav-link">Home</a></li>
+			  <li class="nav-item active"><a href="login.html" class="nav-link">Login</a></li>
+	          <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Farmer ?</a>
+              <div class="dropdown-menu" aria-labelledby="dropdown04">
+                <a class="dropdown-item" href="product-add.html">Add Product</a>
+              </div>
+            </li>
+	          <li class="nav-item cta cta-colored"><a href="cart.html" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
+
+	        </ul>
+	      </div>
+	    </div>
+	  </nav>
+	  <div style="margin-top:-15px;padding:0 6px;"><iframe src="https://agmarknet.gov.in/agnew/namticker.aspx" style="width:100%;height:73px;border:none;"></iframe></div>
+    <div class="hero-wrap hero-bread" style="background-image: url('images/bg_1.jpg');">
+      <div class="container">
+        <div class="row no-gutters slider-text align-items-center justify-content-center">
+          <div class="col-md-9 ftco-animate text-center">
+          	<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span class="mr-2"><a href="index.html">Product</a></span> <span>Product Single</span></p>
+            <h1 class="mb-0 bread">Product Single</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="ftco-section">
+    	<div class="container" id="add_here">
+
+		</div>
+
+	</section>
+	<footer class="ftco-footer ftco-section">
+		<div class="container">
+			<div class="row">
+				<div class="mouse">
+						  <a href="#" class="mouse-icon">
+							  <div class="mouse-wheel"><span class="ion-ios-arrow-up"></span></div>
+						  </a>
+					  </div>
+			</div>
+		  <div class="row mb-5">
+			<div class="col-md">
+			  <div class="ftco-footer-widget mb-4 ml-md-5">
+				<h2 class="ftco-heading-2">Menu</h2>
+				<ul class="list-unstyled">
+					<li><a href="about.html" class="py-2 d-block">About</a></li>
+					<li><a href="mailto:www.pes.edu" class="py-2 d-block">Contact Us</a></li>
+				</ul>
+			  </div>
+			</div>
+			<div class="col-md-4">
+			   <div class="ftco-footer-widget mb-4">
+				<h2 class="ftco-heading-2">Help</h2>
+				<div class="d-flex">
+					<ul class="list-unstyled mr-l-5 pr-l-3 mr-4">
+					  <li><a href="cart.html" class="py-2 d-block">Shipping Information</a></li>
+
+					</ul>
+				  </div>
+			  </div>
+			</div>
+			<div class="col-md">
+			  <div class="ftco-footer-widget mb-4">
+				  <h2 class="ftco-heading-2">Have a Question ?</h2>
+				  <div class="block-23 mb-3">
+					<ul>
+					  <li><span class="icon icon-map-marker"></span><span class="text">100 Feet Ring Road,
+  BSK III Stage,
+  Bangalore-560085</span></li>
+					  <li><a href="#"><span class="icon icon-phone"></span><span class="text">+91 80 26721983</span></a></li>
+					  <li><a href="#"><span class="icon icon-envelope"></span><span class="text">www.pes.edu</span></a></li>
+					</ul>
+				  </div>
+			  </div>
+			</div>
+		  </div>
+		</div>
+	  </footer>
+    
+  
+
+  <!-- loader -->
+  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+  <a id="prod_page" href="product-single.html" style="display: none;"></a>
+
+  <script src="js/jquery.min.js"></script>
+  <script src="js/jquery-migrate-3.0.1.min.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/jquery.easing.1.3.js"></script>
+  <script src="js/jquery.waypoints.min.js"></script>
+  <script src="js/jquery.stellar.min.js"></script>
+  <script src="js/owl.carousel.min.js"></script>
+  <script src="js/jquery.magnific-popup.min.js"></script>
+  <script src="js/aos.js"></script>
+  <script src="js/jquery.animateNumber.min.js"></script>
+  <script src="js/bootstrap-datepicker.js"></script>
+  <script src="js/scrollax.min.js"></script>
+  <script src="js/main.js"></script>
+
+  <script>
+		$(document).ready(function(){
+
+		var quantitiy=0;
+		   $('.quantity-right-plus').click(function(e){
+		        
+		        // Stop acting like a button
+		        e.preventDefault();
+		        // Get the field name
+		        var quantity = parseInt($('#quantity').val());
+		        
+		        // If is not undefined
+		            
+		            $('#quantity').val(quantity + 1);
+
+		          
+		            // Increment
+		        
+		    });
+
+		     $('.quantity-left-minus').click(function(e){
+		        // Stop acting like a button
+		        e.preventDefault();
+		        // Get the field name
+		        var quantity = parseInt($('#quantity').val());
+		        
+		        // If is not undefined
+		      
+		            // Increment
+		            if(quantity>0){
+		            $('#quantity').val(quantity - 1);
+		            }
+		    });
+		    
+		});
+	</script>
+    
+  </body>
+</html>
+<script>
+	prodid=localStorage.getItem("product_id");
+	disp_product(prodid)
+	function disp_product(name)
+	{
+		localStorage.setItem("prodid",name);
+		$.ajax({
+			url: "http://127.0.0.1:5000/api/product/"+name,
+			method:"GET",
+			contentType: "application/json",
+            dataType: 'json',
+			success: function(data){
+				var row=init_row();
+				console.log(data)
+				display_image(row,data["IMAGES"][0]["IMAGEPATH"])
+				var p=display_all_details_div(row);
+				display_heading(p,data["PRODTITLE"]);
+				get_rest_of_data(name,p,data);
+			},
+			error: function(jqXHR, textStatus, errorThrown){
+						console.log(textStatus + ": " + jqXHR.status + " " + errorThrown);
+			}
+		});
+	}
+
+	function get_rest_of_data(name,product_par,product_data)
+	{
+		$.ajax({
+			url: "http://127.0.0.1:5000/api/review/"+name,
+			method:"GET",
+			contentType: "application/json",
+            dataType: 'json',
+			success: function(data){
+				related_product=add_related_product_heading();
+				//add_related_product(related_product,"sugarcane","images/2/sugarcane-variety.jpg",0,100,2);
+				get_related_products(related_product,);
+				var p=init_messages(data.length);
+				var rate=0
+				for(var i=0;i<data.length;i++)
+				{
+					rate+=data[i]["REVIEWSTAR"];
+					add_comment(p,data[i]["CONSNAME"],data[i]["REVIEWTIME"],data[i]["REVIEWDESC"],data[i]["REVIEWSTAR"]);
+				}
+				if(data.length==0)
+				{
+					rate=0;
+				}
+				else
+					rate=Math.floor(rate/data.length);
+				display_rating(product_par,rate,0,1,data.length,data.length);
+				display_price(product_par,product_data["PRICE"]);
+				display_description(product_par,product_data["PRODDESC"]);
+				display_available_quant(product_par,product_data["MAXQUANT"]);
+				display_min_buy_quant(product_par,product_data["MINBUYQUANT"]);
+				add_to_cart_btn(product_par);
+			},
+			error: function(jqXHR, textStatus, errorThrown){
+						console.log(textStatus + ": " + jqXHR.status + " " + errorThrown);
+			}
+		});
+	}
+
+	function get_related_products(related_product)
+	{
+
+		$.ajax({
+			url: "http://127.0.0.1:5000/api/related/"+prodid,
+			method:"GET",
+			contentType: "application/json",
+            dataType: 'json',
+			success: function(data){
+				for(var i=0;i<Math.min(data.length,4);i++)
+					add_related_product(related_product,data[i]["PRODTITLE"],data[i]["IMAGES"][0]["IMAGEPATH"],0,data[i]["PRICE"],data[i]["PRODID"]);
+			},
+			error: function(jqXHR, textStatus, errorThrown){
+						console.log(textStatus + ": " + jqXHR.status + " " + errorThrown);
+			}
+		});
+
+	}
+
+
+	function init_messages(num)
+	{
+		var temp=document.createElement("div");
+		temp.className="container";
+		var temp1=document.createElement("div");
+		temp1.className="row";
+		var temp2=document.createElement("div");
+		temp2.className="col-lg-12";
+		var temp3=document.createElement("div");
+		temp3.className="comment-form-wrap";
+		var temp4=document.createElement("h3");
+		temp4.className="mb-5";
+		temp4.innerHTML="Leave a Review";
+		temp3.appendChild(temp4);
+		var temp5=document.createElement("div");
+		temp5.className="form-group p-5 bg-light";
+		temp3.appendChild(temp5);
+		var temp6=document.createElement("div");
+		temp6.innerHTML='<label for="message">Message</label><textarea id="message" cols="30" rows="4" class="form-control"></textarea></div><div class="form-group"><br><br><button onclick="send_comment()" class="btn py-3 px-4 btn-primary">Post Comment</button><br><br>'
+		var temp7=document.createElement("div");
+		var temp8=document.createElement("div");
+		temp8.innerHTML="Rating<br>"
+		temp7.appendChild(temp8);
+		display_rating(temp7,0,1,0,0,0);
+		temp5.appendChild(temp7);
+		temp5.appendChild(temp6);
+		var num_reviews=document.createElement("h3");
+		num_reviews.className="mb-5";
+		num_reviews.innerHTML=num+" Reviews";
+		comment_list=document.createElement("ul");
+		comment_list.id="comment_list_root"
+		comment_list.className="comment-list";
+		temp3.appendChild(num_reviews);
+		temp3.appendChild(comment_list);
+		temp2.appendChild(temp3);
+		temp1.appendChild(temp2);
+		temp.appendChild(temp1);
+		$("#add_here")[0].appendChild(temp);
+		return comment_list;
+	}
+
+	function send_comment()
+	{
+		if(localStorage.getItem("details")==null)
+		{
+			alert("please login to comment !")
+			return;
+		}
+		obj={}
+		O=JSON.parse(localStorage.getItem("details"))
+		obj["reviewerid"]=O.id;
+		obj["prodid"]=localStorage.getItem("prodid");
+		obj["reviewdesc"]=$("#message").val();
+		obj["reviewstar"]=$("#ratings").html();
+		obj["verified"]=1;
+		obj["type"]=O.type;
+		$.ajax({
+			url: "http://127.0.0.1:5000/api/review",
+			data: JSON.stringify(obj),
+			method:"POST",
+			contentType: "application/json",
+			success: function(data, textStatus, jqXHR){
+				if(jqXHR.status==200)
+                {
+					add_comment($("#comment_list_root")[0],O.name,new Date().toLocaleDateString(),obj["reviewdesc"],obj["reviewstar"])
+					$("#message").val("");
+					for(var i=1;i<=5;i++)
+        			{
+            			$("#s"+i)[0].className="ion-ios-star-outline";
+					}
+					$("#ratings").html("");
+				}
+				else
+					alert("Cannot add review. Please try later");
+			},
+			error: function(jqXHR, textStatus, errorThrown){
+						console.log(textStatus + ": " + jqXHR.status + " " + errorThrown);
+			}
+		});
+
+	}
+
+	function add_comment(p1,name,date,comment_desc,ratings)
+	{
+		/*var html_str='<li class="comment"><div class="vcard bio"><img src="images/person_1.jpg" alt="Image placeholder"></div><div class="comment-body">'
+		html_str+='<h3>'+name+'</h3>'
+		html_str+='<div class="meta">'+date+'</div>'
+		html_str+='<p>'+comment_desc+'</p></div></li>'
+		p1.insertAdjacentHTML("afterbegin",html_str);*/
+		var li=document.createElement("li");
+		li.className="comment";
+		var bio=document.createElement("div");
+		bio.className="vcard bio";
+		var img=document.createElement("img");
+		img.src="images/person_1.jpg";
+		bio.appendChild(img);
+		li.appendChild(bio);
+		var comment_body=document.createElement("div");
+		comment_body.className="comment-body";
+		var name_=document.createElement("h3");
+		name_.innerHTML=name;
+		comment_body.appendChild(name_);
+		var ratings_=document.createElement("div");
+		display_rating(ratings_,ratings,0,0,0,0);
+		comment_body.appendChild(ratings_);
+		var date_=document.createElement("div");
+		date_.className="meta";
+		comment_body.appendChild(date_);
+		var comment_desc_=document.createElement("p");
+		comment_desc_.innerHTML=comment_desc;
+		comment_body.appendChild(comment_desc_);
+		li.appendChild(comment_body);
+		p1.appendChild(li);
+	}
+
+	function add_related_product_heading()
+	{
+		var d=document.createElement("div");
+		d.className="container"
+		d.innerHTML='<div class="row justify-content-center mb-3 pb-3"><div class="col-md-12 heading-section text-center"><span class="subheading">Products</span><h2 class="mb-4">Related Products</h2></div></div>'
+		$("#add_here")[0].appendChild(d);
+		var temp=document.createElement("div");
+		temp.className="container";
+		var temp2=document.createElement("div");
+		temp2.className="row";
+		temp.appendChild(temp2);
+		$("#add_here")[0].appendChild(temp);
+		return temp2;
+	}
+	function add_related_product(p1,title,image_url,discount,price,prodid)
+	{
+		var temp=document.createElement("div");
+		temp.className="col-md-6 col-lg-3";
+		temp.id=prodid;
+		temp.onclick=function(){ product_page(this.id) }
+		var html_str='<div class="product"><a href="#" class="img-prod"><img class="img-fluid" src="'+image_url+'" alt="images/default.png">'
+		if(discount!=0)
+			html_str+='<span class="status">'+discount+'%</span>'
+		html_str+='<div class="overlay"></div></a><div class="text py-3 pb-4 px-3 text-center">'
+		html_str+='<h3><a href="#">'+title+'</a></h3><div class="d-flex"><div class="pricing">'
+		if(discount!=0)
+			html_str+='<p class="price"><span class="mr-2 price-dc">Rs '+price+'</span><span class="price-sale"> Rs '+(price-(discount/100)*price)+'</span></p></div></div>'
+		else
+			html_str+='<p class="price"><span>Rs '+price+'</span></p></div></div>'
+		html_str+='<div class="bottom-area d-flex px-3"><div class="m-auto d-flex"><a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1"><span><i class="ion-ios-cart"></i></span></a>'
+		html_str+='</div></div></div></div>'
+		temp.innerHTML=html_str;
+		p1.appendChild(temp);
+	}
+	function init_row()
+	{
+		var r=document.createElement("div");
+		r.className="row";
+		$("#add_here")[0].appendChild(r);
+		return r;
+	}
+	function display_image(r,img_url)
+	{
+		var temp=document.createElement("div");
+		temp.className="col-lg-6 mb-5";
+		var temp1=document.createElement("a");
+		temp1.href=img_url;
+		temp1.className="image-popup";
+		var img=document.createElement("img");
+		img.src=img_url;
+		img.className="img-fluid";
+		img.alt="Colorlib Template";
+		temp1.appendChild(img);
+		temp.appendChild(temp1);
+		r.appendChild(temp);
+		
+	}
+	function display_all_details_div(r)
+	{
+		var temp=document.createElement("div");
+		temp.className="col-lg-6 product-details pl-md-5";
+		r.appendChild(temp);
+		return temp;
+	}
+
+	function display_heading(r,heading)
+	{
+		var temp=document.createElement("h3");
+		temp.innerHTML=heading;
+		r.appendChild(temp);
+	}
+
+	function display_rating(par,rating,change,disp_num,num_ratings,num_sold)
+	{
+		rating_flex=document.createElement("div");
+		rating_flex.className="rating d-flex"
+		text_left=document.createElement("p");
+		text_left.className="text-left mr-4"
+		rating_disp=document.createElement("a");
+        rating_disp.className="mr-2";
+		if(change!=1)
+		{
+			rating_disp.innerHTML=rating;
+		}
+		else
+			rating_disp.id="ratings"
+        text_left.appendChild(rating_disp);
+		for(var i=1;i<=rating;i++)
+		{
+			star=document.createElement("a");
+            star.href="#ratings";
+            sp=document.createElement("span");
+            
+            if(change==1)
+            {
+                sp.className="ion-ios-star-outline";
+                star.id=i
+                star.onclick=function (){fill_star(this.id); return false}
+                sp.id="s"+i
+            }
+            else
+                sp.className="ion-ios-star";
+			star.appendChild(sp);
+			text_left.appendChild(star);
+		} 
+		for(var i=rating+1;i<=5;i++)
+		{
+			star=document.createElement("a");
+            star.href="#";
+            sp=document.createElement("span");
+            sp.className="ion-ios-star-outline";
+            if(change==1)
+            {
+                star.id=i
+                star.onclick=function (){fill_star(this.id); return false }
+                sp.id="s"+i
+            }
+			star.appendChild(sp);
+			text_left.appendChild(star);
+		}       
+        rating_flex.appendChild(text_left);
+        if(disp_num==1)
+        {
+		temp=document.createElement("p");
+		temp.className="text-left mr-4";
+		temp.innerHTML=	"<a href='#'' class='mr-2' style='color: #000;'>"+num_ratings+"<span style='color: #bbb;'> Rating</span></a>"
+		rating_flex.appendChild(temp);
+		temp=document.createElement("p");
+		temp.className="text-left";
+		temp.innerHTML="<a href='#' class='mr-2' style='color: #000;'>"+num_sold+"<span style='color: #bbb;'> Sold</span></a>"
+        rating_flex.appendChild(temp);
+        }
+		par.appendChild(rating_flex);
+	}
+
+    function fill_star(id)
+    {
+        id=id*1
+        for(var i=1;i<=id;i++)
+        {
+            $("#s"+i)[0].className="ion-ios-star";
+        }
+        for(var i=id+1;i<=5;i++)
+        {
+            $("#s"+i)[0].className="ion-ios-star-outline";
+        }
+        $("#ratings").html(id);
+    }
+
+	function display_price(r,price)
+	{
+		var temp=document.createElement("p");
+		temp.className="price";
+		var temp1=document.createElement("span");
+		temp1.innerHTML="Rs "+price;
+		temp.appendChild(temp1);
+		r.appendChild(temp);
+	}
+	function display_description(r,desc)
+	{
+		var temp=document.createElement("p");
+		temp.innerHTML=desc;
+		r.appendChild(temp);
+	}
+	function display_available_quant(r,quant)
+	{
+		var temp=document.createElement("p");
+		temp.style.color="black";
+		temp.innerHTML=quant+" kg available";
+		r.appendChild(temp);
+	}
+	function display_min_buy_quant(r,quant)
+	{
+		var temp=document.createElement("p");
+		temp.style.color="black";
+		temp.id="min_buy_quant"
+		temp.innerHTML=quant+" kg min buy quantity";
+		r.appendChild(temp);
+	}
+	function add_to_cart_btn(r)
+	{
+		var temp=document.createElement("p");
+		temp.innerHTML="<a href='#' onclick='add_to_cart(prodid)' class='btn btn-black py-3 px-5'>Add to Cart</a>"+"<a href='cart.html' id='goto_cart' style='display:none;'>submit</a>";
+		r.appendChild(temp);
+	}
+
+	function add_to_cart(pid)
+	{
+		if(localStorage.getItem("details")==null)
+		{
+			alert("please login to add item to cart !")
+			return;
+		}
+		O=JSON.parse(localStorage.getItem("details"))
+		obj={"consid":O.id,"prodid":pid,"quantity":$("#min_buy_quant").html().split(" ")[0]};
+		
+		$.ajax({
+			url: "http://127.0.0.1:5000/api/cart",
+			data: JSON.stringify(obj),
+			method:"POST",
+			contentType: "application/json",
+			success: function(data, textStatus, jqXHR){
+						if(jqXHR.status==200)
+						{
+							$("#goto_cart")[0].click();
+							return;
+						}
+						else
+							alert("could not add to cart. please try later !")
+			},
+			error: function(jqXHR, textStatus, errorThrown){
+						console.log(textStatus + ": " + jqXHR.status + " " + errorThrown);
+			}
+		});
+	}
+	function product_page(term)
+	{
+		localStorage.setItem("product_id",term);
+		$("#prod_page")[0].click();
+	}
+</script>
+<a id="prod_page" href="product-single.html" style="display: none;"></a>
+<a id="search_page" href="search_results.html" style="display: none;"></a>
+<script>
+	var object ={
+  xhr:new XMLHttpRequest(),
+  getTerm:function(event){
+
+	  if (event.keyCode === 13) {
+		  localStorage.setItem("search_term",$("#search").val());
+		  $("#search_page")[0].click();
+	  }
+  
+	  object.search = $("#search")[0]; // input text fieldset
+	  object.container = $("#container")[0]; //placeholder for food suggestions
+		  
+	  if(this.timer){
+		  console.log("timer cleared");
+		  clearTimeout(this.timer);
+	  }
+	  this.timer = setTimeout(object.sendTerm,1000);
+  },
+  sendTerm:function(){
+	  if(localStorage.getItem(object.search.value)){
+		  var cacheObj = JSON.parse(localStorage.getItem(object.search.value));
+		  console.log("from cache");
+		  object.populateFood(cacheObj);
+	  } else {
+		  object.xhr.onloadend = object.showResult;
+		  object.xhr.open("get", "http://127.0.0.1:5000/api/sub/"+object.search.value);
+		  object.xhr.responseType="json";
+		  object.xhr.send();
+	  }
+  },
+  showResult:function(){
+	  var resObj = this.response;
+	  console.log(this.response)
+	  if(resObj==null)
+	  {
+		  object.search.style.backgroundColor="";
+		  object.container.style.display="none";	
+		  return;
+	  }
+	  if(resObj.length==0){
+		  object.search.style.backgroundColor="red";
+		  object.container.style.display="none";
+	  }
+	  else{
+		  localStorage.setItem(object.search.value, JSON.stringify(resObj));
+		  object.search.style.backgroundColor="";
+		  object.populateFood(resObj);
+	  }
+	  
+  },
+  populateFood:function(resO){
+	  object.container.innerHTML="";
+	  for (var o in resO){
+		  var iDiv = document.createElement("div");
+		  iDiv.innerHTML = resO[o][0];
+		  iDiv.id=resO[o][1];
+		  iDiv.onclick=function(){product_page(this.id)}
+		  iDiv.className = "fooditem";
+		  object.container.appendChild(iDiv);
+	  }
+	  object.container.style.display="block";
+  }
+};
+function product_page(term)
+{
+  localStorage.setItem("product_id",term);
+  $("#prod_page")[0].click();
+}
+</script>
