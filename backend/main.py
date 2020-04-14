@@ -49,6 +49,31 @@ def deals(num):
 
     return jsonify(result)
 
+@app.route('/api/transactions', methods=['GET'])
+@cross_origin(origin='*')
+def transactions():
+
+    inp={"table":"SALES","columns":["DISTINCT SALEID"],"where":""}
+    send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
+    data=send.content
+    data=eval(data)
+    result = []
+    for trans in data:
+        inp={"table":"SALES","columns":["PRODID"],"where":"SALEID = "+str(trans[0])}
+        send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
+        res=send.content
+        res=eval(res)
+        products=[]
+        for prod in res:
+            inp={"table":"PRODUCT","columns":["PRODTITLE"],"where":"PRODID = "+str(prod[0])}
+            send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
+            product=send.content
+            product=eval(product)
+            products.append(product[0][0])
+        result.append(products)
+
+    return jsonify(result)
+
 @app.route('/api/related/<prodid>',methods=['GET'])
 @cross_origin(origin='*')
 def related_products(prodid):
@@ -59,7 +84,10 @@ def related_products(prodid):
     data=eval(data)
     if len(data)==0:
         return "[]"
-    rel = rp.related(data[0][0])
+    send=requests.get('http://127.0.0.1:5000/api/transactions')
+    transactions=send.content
+    transactions=eval(transactions)
+    rel = rp.related(transactions,data[0][0])
     result = []
     products={prodid}
     for prod in rel:
@@ -209,9 +237,6 @@ def delete_product(prodid):
     else:
         return Response("0",status=500,mimetype="application/text")
 
-
-
-
 @app.route('/api/product', methods=['POST'])
 @cross_origin(origin='*')
 def add_product():
@@ -226,10 +251,10 @@ def add_product():
     price = int(json["price"])
     disc = ps.get_discount(json["title"],int(price))
     disc=eval(disc)
-    print(disc)
+    #print(disc)
     if disc:
         disc=disc[0]
-        print(disc)
+        #print(disc)
         inp={"table":"DEALS","column":"DEALID"}
         send=requests.get('http://127.0.0.1:5000/api/GenId',json=inp)
         dealid=send.content
