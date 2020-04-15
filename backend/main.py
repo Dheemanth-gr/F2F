@@ -87,10 +87,14 @@ def related_products(prodid):
     send=requests.get('http://127.0.0.1:5000/api/transactions')
     transactions=send.content
     transactions=eval(transactions)
+
     rel = rp.related(transactions,data[0][0])
+    rel=eval(rel) 
+    #print(rel)
     result = []
     products={prodid}
     for prod in rel:
+        #print(prod)
         inp={"table":"PRODUCT","columns":["PRODID"],"where":"PRODTITLE LIKE '"+prod+"%'"}
         send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
         ids=send.content
@@ -115,7 +119,7 @@ def related_products(prodid):
 def predict_price():
     json = request.get_json()
     data = ps.predict(json["state"],json["district"],json["product"])
-    print(data)
+    #print(data)
     return jsonify(data)
 
 @app.route('/api/GenId', methods=['GET'])
@@ -454,9 +458,9 @@ def disp_product(prodid):
     data.append(l)
 
     #for i in range(0,len(data)):
-    print(data)
-    print(data[0])
-    print(data[6])
+    #print(data)
+    #print(data[0])
+    #print(data[6])
 
     temp = {}
     temp["PRODTITLE"] = data[0]
@@ -511,7 +515,7 @@ def disp_review(prodid):
         user=send.content
         user=eval(user)
         for i in user[0]:
-            print(i)
+            #print(i)
             data[l].append(i)
 
     for i in range(0,len(data)):
