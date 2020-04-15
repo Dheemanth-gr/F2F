@@ -148,108 +148,72 @@
   <script src="js/scrollax.min.js"></script>
   <script src="js/main.js"></script>
 
-  <script>
-		$(document).ready(function(){
-
-		var quantitiy=0;
-		   $('.quantity-right-plus').click(function(e){
-		        
-		        // Stop acting like a button
-		        e.preventDefault();
-		        // Get the field name
-		        var quantity = parseInt($('#quantity').val());
-		        
-		        // If is not undefined
-		            
-		            $('#quantity').val(quantity + 1);
-
-		          
-		            // Increment
-		        
-		    });
-
-		     $('.quantity-left-minus').click(function(e){
-		        // Stop acting like a button
-		        e.preventDefault();
-		        // Get the field name
-		        var quantity = parseInt($('#quantity').val());
-		        
-		        // If is not undefined
-		      
-		            // Increment
-		            if(quantity>0){
-		            $('#quantity').val(quantity - 1);
-		            }
-		    });
-		    
-		});
-	</script>
       <a id="prod_page" href="product-single.html" style="display: none;"></a>
 	  <a id="search_page" href="search_results.html" style="display: none;"></a>
 	  <script>
-		  var object ={
-		xhr:new XMLHttpRequest(),
-		getTerm:function(event){
-	
-			if (event.keyCode === 13) {
-				localStorage.setItem("search_term",document.getElementById("search").value);
-				document.getElementById("search_page").click();
-			}
-		
-			object.search = document.getElementById("search"); // input text fieldset
-			object.container = document.getElementById("container"); //placeholder for food suggestions
-				
-			if(this.timer){
-				console.log("timer cleared");
-				clearTimeout(this.timer);
-			}
-			this.timer = setTimeout(object.sendTerm,1000);
-		},
-		sendTerm:function(){
-			if(localStorage.getItem(object.search.value)){
-				var cacheObj = JSON.parse(localStorage.getItem(object.search.value));
-				console.log("from cache");
-				object.populateFood(cacheObj);
-			} else {
-				object.xhr.onloadend = object.showResult;
-				object.xhr.open("get", "http://127.0.0.1:5000/api/sub/"+object.search.value);
-				object.xhr.responseType="json";
-				object.xhr.send();
-			}
-		},
-		showResult:function(){
-			var resObj = this.response;
-			console.log(this.response)
-			if(resObj==null)
-			{
-				object.search.style.backgroundColor="";
-				object.container.style.display="none";	
-				return;
-			}
-			if(resObj.length==0){
-				object.search.style.backgroundColor="red";
-				object.container.style.display="none";
-			}
-			else{
-				localStorage.setItem(object.search.value, JSON.stringify(resObj));
-				object.search.style.backgroundColor="";
-				object.populateFood(resObj);
-			}
-			
-		},
-		populateFood:function(resO){
-			object.container.innerHTML="";
-			for (var o in resO){
-				var iDiv = document.createElement("div");
-				iDiv.innerHTML = resO[o][0];
-				iDiv.id=resO[o][1];
-				iDiv.onclick=function(){product_page(this.id)}
-				iDiv.className = "fooditem";
-				object.container.appendChild(iDiv);
-			}
-			object.container.style.display="block";
+var object ={
+    xhr:new XMLHttpRequest(),
+    getTerm:function(event){
+
+		if (event.keyCode === 13) {
+		  localStorage.setItem("search_term",$("#search").val());
+			$("#search_page")[0].click();
 		}
-	};
+    
+        object.search = $("#search")[0]; 
+        object.container = $("#container")[0]; 
+            
+        if(this.timer){
+            console.log("timer cleared");
+            clearTimeout(this.timer);
+        }
+        this.timer = setTimeout(object.sendTerm,1000);
+    },
+    sendTerm:function(){
+        //if(localStorage.getItem(object.search.value)){
+        //    var cacheObj = JSON.parse(localStorage.getItem(object.search.value));
+        //    console.log("from cache");
+        //    object.populateFood(cacheObj);
+        //} else {
+            object.xhr.onloadend = object.showResult;
+            object.xhr.open("get", "http://127.0.0.1:5000/api/sub/"+object.search.value);
+            object.xhr.responseType="json";
+            object.xhr.send();
+       // }
+    },
+    showResult:function(){
+        var resObj = this.response;
+        console.log(this.response)
+        if(resObj==null)
+        {
+            object.search.style.backgroundColor="";
+            object.container.style.display="none";	
+            return;
+        }
+        if(resObj.length==0){
+            object.search.style.backgroundColor="red";
+            object.container.style.display="none";
+        }
+        else{
+            //localStorage.setItem(object.search.value, JSON.stringify(resObj));
+            object.search.style.backgroundColor="";
+            object.populateFood(resObj);
+        }
+        
+    },
+    populateFood:function(resO){
+        object.container.innerHTML="";
+        for (var o in resO){
+            var iDiv = document.createElement("div");
+			iDiv.innerHTML = resO[o][0];
+			iDiv.id=resO[o][1];
+			iDiv.onclick=function(){product_page(this.id)}
+            iDiv.className = "fooditem";
+            object.container.appendChild(iDiv);
+        }
+        object.container.style.display="block";
+    }
+};
 	function product_page(term)
 	{
 		localStorage.setItem("product_id",term);

@@ -262,7 +262,7 @@ Bangalore-560085</span></li>
 		html_str+='<div class="overlay"></div></a><div class="text py-3 pb-4 px-3 text-center">'
 		html_str+='<h3><a href="#">'+title+'</a></h3><div class="d-flex"><div class="pricing">'
 		if(discount!=0)
-			html_str+='<p class="price"><span class="mr-2 price-dc">Rs '+price+'</span><span class="price-sale"> Rs '+(price-(discount/100)*price)+'</span></p></div></div>'
+			html_str+='<p class="price"><span class="mr-2 price-dc">Rs '+price+'</span><span class="price-sale"> Rs '+(price-(discount/100)*price).toFixed(0)+'</span></p></div></div>'
 		else
 			html_str+='<p class="price"><span>Rs '+price+'</span></p></div></div>'
 		html_str+='<div class="bottom-area d-flex px-3"><div class="m-auto d-flex"><a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1"><span><i class="ion-ios-cart"></i></span></a>'
@@ -281,7 +281,7 @@ Bangalore-560085</span></li>
           related_product=add_related_product_heading();
           for(var i=0;i<Math.min(4,data.length);i++)
           {
-            add_related_product(related_product,data[i]["PRODTITLE"],data[i]["IMAGES"][0]["IMAGEPATH"],data[i]["DISCOUNT_PERCENT"],data[i]["PRICE"],data[i]["PRODID"]);
+            add_related_product(related_product,data[i]["PRODTITLE"],data[i]["IMAGES"][0]["IMAGEPATH"],data[i]["DISCOUNT_PERCENT"],(data[i]["PRICE"]+data[i]["DISCOUNT_PERCENT"]*data[i]["PRICE"]/100).toFixed(2),data[i]["PRODID"]);
           }
         },
         error: function(jqXHR, textStatus, errorThrown){
@@ -298,8 +298,8 @@ Bangalore-560085</span></li>
 			$("#search_page")[0].click();
 		}
     
-        object.search = $("#search")[0]; // input text fieldset
-        object.container = $("#container")[0]; //placeholder for food suggestions
+        object.search = $("#search")[0]; 
+        object.container = $("#container")[0]; 
             
         if(this.timer){
             console.log("timer cleared");
@@ -308,16 +308,16 @@ Bangalore-560085</span></li>
         this.timer = setTimeout(object.sendTerm,1000);
     },
     sendTerm:function(){
-        if(localStorage.getItem(object.search.value)){
-            var cacheObj = JSON.parse(localStorage.getItem(object.search.value));
-            console.log("from cache");
-            object.populateFood(cacheObj);
-        } else {
+        //if(localStorage.getItem(object.search.value)){
+        //    var cacheObj = JSON.parse(localStorage.getItem(object.search.value));
+        //    console.log("from cache");
+        //    object.populateFood(cacheObj);
+        //} else {
             object.xhr.onloadend = object.showResult;
             object.xhr.open("get", "http://127.0.0.1:5000/api/sub/"+object.search.value);
             object.xhr.responseType="json";
             object.xhr.send();
-        }
+       // }
     },
     showResult:function(){
         var resObj = this.response;
@@ -333,7 +333,7 @@ Bangalore-560085</span></li>
             object.container.style.display="none";
         }
         else{
-            localStorage.setItem(object.search.value, JSON.stringify(resObj));
+            //localStorage.setItem(object.search.value, JSON.stringify(resObj));
             object.search.style.backgroundColor="";
             object.populateFood(resObj);
         }
@@ -355,6 +355,7 @@ Bangalore-560085</span></li>
 function product_page(term)
 {
 	localStorage.setItem("product_id",term);
+  //console.log(localStorage.getItem("product_id"))
 	$("#prod_page")[0].click();
 }
   </script>

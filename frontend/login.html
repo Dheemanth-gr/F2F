@@ -268,7 +268,7 @@ body{
     <div id="signup-form">
         <form>
             <input type="text" id="name2" placeholder="Choose username"/>
-            <input type="text" id="city" placeholder="Enter city"/>
+            <input type="text" id="city" placeholder="Enter District"/>
             <input type="text" id="state" placeholder="Enter state"/>
             <input type="password" id="passwd2" placeholder="Create password"/>
             <div id="outcome2"></div>
@@ -339,7 +339,7 @@ Bangalore-560085</span></li>
   <a id="prod_page" href="product-single.html" style="display: none;"></a>
   <a id="search_page" href="search_results.html" style="display: none;"></a>
   <script>
-	  var object ={
+var object ={
     xhr:new XMLHttpRequest(),
     getTerm:function(event){
 
@@ -348,8 +348,8 @@ Bangalore-560085</span></li>
 			$("#search_page")[0].click();
 		}
     
-        object.search = $("#search")[0]; // input text fieldset
-        object.container = $("#container")[0]; //placeholder for food suggestions
+        object.search = $("#search")[0]; 
+        object.container = $("#container")[0]; 
             
         if(this.timer){
             console.log("timer cleared");
@@ -358,16 +358,16 @@ Bangalore-560085</span></li>
         this.timer = setTimeout(object.sendTerm,1000);
     },
     sendTerm:function(){
-        if(localStorage.getItem(object.search.value)){
-            var cacheObj = JSON.parse(localStorage.getItem(object.search.value));
-            console.log("from cache");
-            object.populateFood(cacheObj);
-        } else {
+        //if(localStorage.getItem(object.search.value)){
+        //    var cacheObj = JSON.parse(localStorage.getItem(object.search.value));
+        //    console.log("from cache");
+        //    object.populateFood(cacheObj);
+        //} else {
             object.xhr.onloadend = object.showResult;
             object.xhr.open("get", "http://127.0.0.1:5000/api/sub/"+object.search.value);
             object.xhr.responseType="json";
             object.xhr.send();
-        }
+       // }
     },
     showResult:function(){
         var resObj = this.response;
@@ -383,7 +383,7 @@ Bangalore-560085</span></li>
             object.container.style.display="none";
         }
         else{
-            localStorage.setItem(object.search.value, JSON.stringify(resObj));
+            //localStorage.setItem(object.search.value, JSON.stringify(resObj));
             object.search.style.backgroundColor="";
             object.populateFood(resObj);
         }

@@ -45,6 +45,7 @@ def deals(num):
         res=eval(res)
         res["UNIT_PRICE"]=deal[2]
         res["DISCOUNT_PERCENT"]=deal[3]
+        res['PRODID']=str(deal[1])
         result.append(res)
 
     return jsonify(result)
@@ -87,7 +88,7 @@ def related_products(prodid):
     send=requests.get('http://127.0.0.1:5000/api/transactions')
     transactions=send.content
     transactions=eval(transactions)
-
+    #print(transactions)
     rel = rp.related(transactions,data[0][0])
     rel=eval(rel) 
     #print(rel)
@@ -200,7 +201,7 @@ def add_user():
 def update_cart():
     json = request.get_json()
 
-    inp={"table":"PRODUCT","where":"PRODID = "+json["prodid"]+" AND "+json["quantity"]+" >= MINBUYQUANT"}
+    inp={"table":"PRODUCT","where":"PRODID = "+json["prodid"]+" AND MINBUYQUANT <="+json["quantity"]}
     send=requests.get('http://127.0.0.1:5000/api/check',json=inp)
     if(send.status_code != requests.codes.ok):
         return Response("Not buying minimum quantity",status=201,mimetype="application/text")

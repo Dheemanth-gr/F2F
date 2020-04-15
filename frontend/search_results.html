@@ -207,7 +207,8 @@
 			return;
 		}
 		O=JSON.parse(localStorage.getItem("details"))
-		obj={"consid":O.id,"prodid":pid,"quantity":"1"};
+		var q_= $("#quant_"+pid).html()
+		var obj={"consid":O.id,"prodid":pid,"quantity":q_};
 		$.ajax({
 			url: "http://127.0.0.1:5000/api/cart",
 			data: JSON.stringify(obj),
@@ -319,75 +320,75 @@
 		var pid=data[pg_no]["PRODID"]
 		var row=document.createElement("tr");
 		row.className="text-center";
-		row.innerHTML="<td class='image-prod'><div class='img' style='background-image:url("+imgage_url+")';></div></td> <td class='product-name'><h3>"+title+"</h3><p>"+desc+"</p></td> <td class='price' >"+price+"</td><td class='quantity'>"+quantity+"</td><td class='total'><a href='#' onclick='add_to_cart(this.id.slice(1,this.id.length))'  id='c"+pid+"' class='btn btn-primary py-3 px-4'>Add to cart</a></td>"
+		row.innerHTML="<td class='image-prod'><div class='img' style='background-image:url("+imgage_url+")';></div></td> <td class='product-name'><h3>"+title+"</h3><p>"+desc+"</p></td> <td class='price' >"+price+"</td><td class='quantity' id='quant_"+pid+"' >"+quantity+"</td><td class='total'><a href='#' onclick='add_to_cart(this.id.slice(1,this.id.length))'  id='c"+pid+"' class='btn btn-primary py-3 px-4'>Add to cart</a></td>"
 		tbody.appendChild(row)
 	}
 </script>
 <a id="prod_page" href="product-single.html" style="display: none;"></a>
 <a id="search_page" href="search_results.html" style="display: none;"></a>
 <script>
-	var object ={
-  xhr:new XMLHttpRequest(),
-  getTerm:function(event){
+var object ={
+    xhr:new XMLHttpRequest(),
+    getTerm:function(event){
 
-	  if (event.keyCode === 13) {
-		  localStorage.setItem("search_term",$("#search").val());
-		  $("#search_page")[0].click();
-	  }
-  
-	  object.search = $("#search")[0]; // input text fieldset
-	  object.container = $("#container")[0]; //placeholder for food suggestions
-		  
-	  if(this.timer){
-		  console.log("timer cleared");
-		  clearTimeout(this.timer);
-	  }
-	  this.timer = setTimeout(object.sendTerm,1000);
-  },
-  sendTerm:function(){
-	  if(localStorage.getItem(object.search.value)){
-		  var cacheObj = JSON.parse(localStorage.getItem(object.search.value));
-		  console.log("from cache");
-		  object.populateFood(cacheObj);
-	  } else {
-		  object.xhr.onloadend = object.showResult;
-		  object.xhr.open("get", "http://127.0.0.1:5000/api/sub/"+object.search.value);
-		  object.xhr.responseType="json";
-		  object.xhr.send();
-	  }
-  },
-  showResult:function(){
-	  var resObj = this.response;
-	  console.log(this.response)
-	  if(resObj==null)
-	  {
-		  object.search.style.backgroundColor="";
-		  object.container.style.display="none";	
-		  return;
-	  }
-	  if(resObj.length==0){
-		  object.search.style.backgroundColor="red";
-		  object.container.style.display="none";
-	  }
-	  else{
-		  localStorage.setItem(object.search.value, JSON.stringify(resObj));
-		  object.search.style.backgroundColor="";
-		  object.populateFood(resObj);
-	  }
-	  
-  },
-  populateFood:function(resO){
-	  object.container.innerHTML="";
-	  for (var o in resO){
-		  var iDiv = document.createElement("div");
-		  iDiv.innerHTML = resO[o][0];
-		  iDiv.id=resO[o][1];
-		  iDiv.onclick=function(){product_page(this.id)}
-		  iDiv.className = "fooditem";
-		  object.container.appendChild(iDiv);
-	  }
-	  object.container.style.display="block";
-  }
+		if (event.keyCode === 13) {
+			localStorage.setItem("search_term",$("#search").val());
+			$("#search_page")[0].click();
+		}
+    
+        object.search = $("#search")[0]; 
+        object.container = $("#container")[0]; 
+            
+        if(this.timer){
+            console.log("timer cleared");
+            clearTimeout(this.timer);
+        }
+        this.timer = setTimeout(object.sendTerm,1000);
+    },
+    sendTerm:function(){
+        //if(localStorage.getItem(object.search.value)){
+        //    var cacheObj = JSON.parse(localStorage.getItem(object.search.value));
+        //    console.log("from cache");
+        //    object.populateFood(cacheObj);
+        //} else {
+            object.xhr.onloadend = object.showResult;
+            object.xhr.open("get", "http://127.0.0.1:5000/api/sub/"+object.search.value);
+            object.xhr.responseType="json";
+            object.xhr.send();
+       // }
+    },
+    showResult:function(){
+        var resObj = this.response;
+        console.log(this.response)
+        if(resObj==null)
+        {
+            object.search.style.backgroundColor="";
+            object.container.style.display="none";	
+            return;
+        }
+        if(resObj.length==0){
+            object.search.style.backgroundColor="red";
+            object.container.style.display="none";
+        }
+        else{
+            //localStorage.setItem(object.search.value, JSON.stringify(resObj));
+            object.search.style.backgroundColor="";
+            object.populateFood(resObj);
+        }
+        
+    },
+    populateFood:function(resO){
+        object.container.innerHTML="";
+        for (var o in resO){
+            var iDiv = document.createElement("div");
+			iDiv.innerHTML = resO[o][0];
+			iDiv.id=resO[o][1];
+			iDiv.onclick=function(){product_page(this.id)}
+            iDiv.className = "fooditem";
+            object.container.appendChild(iDiv);
+        }
+        object.container.style.display="block";
+    }
 };
 function product_page(term)
 {

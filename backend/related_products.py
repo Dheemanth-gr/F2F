@@ -19,8 +19,8 @@ from apyori import apriori
 def related(transactions,item):
 
     item = item.lower()
-    print(item)
-    rules = apriori(transactions, min_support = 0.003, min_confidence = 0.2, min_lift = 3, min_length = 2)
+    #print(transactions)
+    rules = apriori(transactions, min_support = 0.003, min_confidence = 0.2, min_lift = 1.1, min_length = 2)
     # Support: number of transactions containing set of times / total number of transactions
     # .      --> products that are bought at least 3 times a day --> 21 / 7501 = 0.0027
     # Confidence: Should not be too high, as then this wil lead to obvious rules
@@ -29,11 +29,11 @@ def related(transactions,item):
 
     #viewing the rules
     results = list(rules)
-    print(results)
     results = pd.DataFrame(results)
-
+    if results.empty==True:
+        return json.dumps([])
     res = list(results['items'])
-    print(res)
+    #print(res)
     d = {}
     for itemset in res:
         for i in itemset:
