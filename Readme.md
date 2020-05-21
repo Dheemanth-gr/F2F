@@ -1,4 +1,4 @@
-To step F2F website, 
+To install F2F website, 
 
 1. install docker and docker-compose
 2. git clone https://github.com/Dheemanth-gr/F2F
