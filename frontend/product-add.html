@@ -187,9 +187,8 @@
 <script src="js/bootstrap-datepicker.js"></script>
 <script src="js/scrollax.min.js"></script>
 <script src="js/main.js"></script>
-
+<script src="js/addr.js"></script>
 <script>
-
 	function price_suggest(title)
 	{
 		
@@ -198,7 +197,7 @@
 		O=JSON.parse(localStorage.getItem("details"));
 		obj=JSON.stringify({"district":O["city"],"state":O["state"],"product":title})
 		$.ajax({
-			url: 'http://127.0.0.1:5000/api/price',
+			url: URL_ADDR+"/api/price",
 			method:"POST",
 			data:obj,
 			contentType: "application/json",
@@ -321,7 +320,7 @@
 					alert(this.responseText);
 			}
 		};
-		xhttp.open("POST", "http://127.0.0.1:5000/api/product", true);
+		xhttp.open("POST",  URL_ADDR+"/api/product", true);
 		if(localStorage.getItem("details")==null)
 		{
 			alert("Please login !")
@@ -347,7 +346,7 @@
 		fd.append('new_name',$('#fid').text())
 		fd.append('file',files);
 		$.ajax({
-			url: 'http://127.0.0.1:5000/api/image/'+img_id,
+			url:  URL_ADDR+"/api/image/"+img_id,
 			type: 'post',
 			data: fd,
 			contentType: false,
@@ -396,7 +395,7 @@ var object ={
         //    object.populateFood(cacheObj);
         //} else {
             object.xhr.onloadend = object.showResult;
-            object.xhr.open("get", "http://127.0.0.1:5000/api/sub/"+object.search.value);
+            object.xhr.open("get", URL_ADDR+"/api/sub/"+object.search.value);
             object.xhr.responseType="json";
             object.xhr.send();
        // }

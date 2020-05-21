@@ -336,6 +336,7 @@ Bangalore-560085</span></li>
   <script src="js/bootstrap-datepicker.js"></script>
   <script src="js/scrollax.min.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/addr.js"></script>
   <a id="prod_page" href="product-single.html" style="display: none;"></a>
   <a id="search_page" href="search_results.html" style="display: none;"></a>
   <script>
@@ -364,7 +365,7 @@ var object ={
         //    object.populateFood(cacheObj);
         //} else {
             object.xhr.onloadend = object.showResult;
-            object.xhr.open("get", "http://127.0.0.1:5000/api/sub/"+object.search.value);
+            object.xhr.open("get", URL_ADDR+"/api/sub/"+object.search.value);
             object.xhr.responseType="json";
             object.xhr.send();
        // }
@@ -452,7 +453,7 @@ function login(t)
     }
     obj={"name":$("#name1").val(),"passwd":$("#passwd1").val(),"type":t};
     $.ajax({
-        url: "http://127.0.0.1:5000/api/login",
+        url: URL_ADDR+"/api/login",
         data: JSON.stringify(obj),
         method:"POST",
         contentType: "application/json",
@@ -505,7 +506,7 @@ function signup(t)
     }
     obj={"name":$("#name2").val(),"passwd":$("#passwd2").val(),"loc":$("#city").val()+","+$("#state").val(),"type":t};
     $.ajax({
-        url: "http://127.0.0.1:5000/api/user",
+        url: URL_ADDR+"/api/user",
         data: JSON.stringify(obj),
         method:"POST",
         contentType: "application/json",

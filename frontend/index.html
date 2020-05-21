@@ -227,10 +227,11 @@ Bangalore-560085</span></li>
   <script src="js/jquery.animateNumber.min.js"></script>
   <script src="js/scrollax.min.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/addr.js"></script>
   <a id="prod_page" href="product-single.html" style="display: none;"></a>
   <a id="search_page" href="search_results.html" style="display: none;"></a>
   <script>
-    get_deals()
+  get_deals()
   function goto_signup()
   {
       localStorage.setItem("toggle","signup");
@@ -273,7 +274,7 @@ Bangalore-560085</span></li>
     function get_deals()
 	  {
       $.ajax({
-        url: "http://127.0.0.1:5000/api/deals/"+4,
+        url: URL_ADDR+"/api/deals/"+4,
         method:"GET",
         contentType: "application/json",
         dataType: 'json',
@@ -314,7 +315,7 @@ Bangalore-560085</span></li>
         //    object.populateFood(cacheObj);
         //} else {
             object.xhr.onloadend = object.showResult;
-            object.xhr.open("get", "http://127.0.0.1:5000/api/sub/"+object.search.value);
+            object.xhr.open("get",URL_ADDR+"/api/sub/"+object.search.value);
             object.xhr.responseType="json";
             object.xhr.send();
        // }

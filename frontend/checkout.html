@@ -74,6 +74,7 @@
       <div class="container" id="add_here">
       </div>
     </section> <!-- .section -->
+        <script src="js/addr.js"></script>
 	<script>
 		insert_billing(localStorage.getItem("cart_subtotal"),localStorage.getItem("dil_subtotal"));
 		function insert_billing(subtotal,delivery)
@@ -95,13 +96,13 @@
 		{
 			O=JSON.parse(localStorage.getItem("details"))
 			$.ajax({
-				url: "http://127.0.0.1:5000/api/buy/"+O.id,
+				url: URL_ADDR+"/api/buy/"+O.id,
 				method:"GET",
 				contentType: "application/json",
 				dataType: 'json',
 				success: function(data){
 					$.ajax({
-						url: "http://127.0.0.1:5000/api/cart/"+O.id,
+						url: URL_ADDR+"/api/cart/"+O.id,
 						method:"GET",
 						contentType: "application/json",
 						success: function(data, textStatus, jqXHR){
@@ -117,7 +118,7 @@
 											var prodid=data[i]["PRODID"]
 											var obj={"consid":O.id,"prodid":prodid}
 											$.ajax({
-												url: "http://127.0.0.1:5000/api/cart",
+												url: URL_ADDR+"/api/cart",
 												data: JSON.stringify(obj),
 												method:"DELETE",
 												contentType: "application/json",
@@ -131,7 +132,7 @@
 										var prodid=data[data.length-1]["PRODID"] 
 										var obj={"consid":O.id,"prodid":prodid}
 										$.ajax({
-											url: "http://127.0.0.1:5000/api/cart",
+											url: URL_ADDR+"/api/cart",
 											data: JSON.stringify(obj),
 											method:"DELETE",
 											contentType: "application/json",
@@ -296,7 +297,7 @@
         //    object.populateFood(cacheObj);
         //} else {
             object.xhr.onloadend = object.showResult;
-            object.xhr.open("get", "http://127.0.0.1:5000/api/sub/"+object.search.value);
+            object.xhr.open("get", URL_ADDR+"/api/sub/"+object.search.value);
             object.xhr.responseType="json";
             object.xhr.send();
        // }

@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 import json
 
 # dataset = pd.read_csv('data/Market_Basket_Optimisation.csv', header = None) 

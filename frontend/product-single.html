@@ -143,7 +143,7 @@
   <script src="js/bootstrap-datepicker.js"></script>
   <script src="js/scrollax.min.js"></script>
   <script src="js/main.js"></script>
-
+  <script src="js/addr.js"></script>
   <script>
 		$(document).ready(function(){
 
@@ -190,7 +190,7 @@
 	{
 		localStorage.setItem("prodid",name);
 		$.ajax({
-			url: "http://127.0.0.1:5000/api/product/"+name,
+			url: URL_ADDR+"/api/product/"+name,
 			method:"GET",
 			contentType: "application/json",
             dataType: 'json',
@@ -211,7 +211,7 @@
 	function get_rest_of_data(name,product_par,product_data)
 	{
 		$.ajax({
-			url: "http://127.0.0.1:5000/api/review/"+name,
+			url: URL_ADDR+"/api/review/"+name,
 			method:"GET",
 			contentType: "application/json",
             dataType: 'json',
@@ -249,7 +249,7 @@
 	{
 
 		$.ajax({
-			url: "http://127.0.0.1:5000/api/related/"+prodid,
+			url: URL_ADDR+"/api/related/"+prodid,
 			method:"GET",
 			contentType: "application/json",
             dataType: 'json',
@@ -322,7 +322,7 @@
 		obj["verified"]=1;
 		obj["type"]=O.type;
 		$.ajax({
-			url: "http://127.0.0.1:5000/api/review",
+			url: URL_ADDR+"/api/review",
 			data: JSON.stringify(obj),
 			method:"POST",
 			contentType: "application/json",
@@ -576,7 +576,7 @@
 		O=JSON.parse(localStorage.getItem("details"))
 		obj={"consid":O.id,"prodid":pid,"quantity":$("#min_buy_quant").html().split(" ")[0]};
 		$.ajax({
-			url: "http://127.0.0.1:5000/api/cart",
+			url: URL_ADDR+"/api/cart",
 			data: JSON.stringify(obj),
 			method:"POST",
 			contentType: "application/json",
@@ -628,7 +628,7 @@ var object ={
         //    object.populateFood(cacheObj);
         //} else {
             object.xhr.onloadend = object.showResult;
-            object.xhr.open("get", "http://127.0.0.1:5000/api/sub/"+object.search.value);
+            object.xhr.open("get", URL_ADDR+"/api/sub/"+object.search.value);
             object.xhr.responseType="json";
             object.xhr.send();
        // }

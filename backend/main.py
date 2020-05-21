@@ -8,9 +8,25 @@ import price_suggestion as ps
 import related_products as rp
 import datetime
 
-db = pymysql.connect("localhost", "root", "", "Farmers")
+config = {
+        'user': 'root',
+        'password': '123',
+        'host': 'db',
+        'port': 3306,
+        'database': 'F2F'
+    }
+
+HOST_ADDR="http://"+os.environ['HOST_IP']+":"+os.environ['HOST_PORT']
+
+#db = pymysql.connect(**config)
+#making db local to read_db and write_db functions
 
 app = Flask(__name__)
+
+@app.route('/', methods=['GET'])
+@cross_origin(origin='*')
+def testing():
+    return "0"
 
 def current_time():
     now = datetime.datetime.now()
@@ -22,7 +38,7 @@ def check():
     json = request.get_json(force=True)
 
     inp={"table":json["table"],"columns":["*"],"where":json["where"]}
-    send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
+    send=requests.get(HOST_ADDR+'/api/db/read',json=inp)
     data=send.content
     data=eval(data)
     if(len(data) > 0):
@@ -35,12 +51,12 @@ def check():
 def deals(num):
 
     inp={"table":"DEALS","columns":["*"],"where":"PRODID>0 ORDER BY DISCOUNT_PERCENT DESC LIMIT "+num}
-    send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
+    send=requests.get(HOST_ADDR+'/api/db/read',json=inp)
     data=send.content
     data=eval(data)
     result = []
     for deal in data:
-        send=requests.get('http://127.0.0.1:5000/api/product/'+str(deal[1]))
+        send=requests.get(HOST_ADDR+'/api/product/'+str(deal[1]))
         res=send.content
         res=eval(res)
         res["UNIT_PRICE"]=deal[2]
@@ -55,19 +71,19 @@ def deals(num):
 def transactions():
 
     inp={"table":"SALES","columns":["DISTINCT SALEID"],"where":""}
-    send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
+    send=requests.get(HOST_ADDR+'/api/db/read',json=inp)
     data=send.content
     data=eval(data)
     result = []
     for trans in data:
         inp={"table":"SALES","columns":["PRODID"],"where":"SALEID = "+str(trans[0])}
-        send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
+        send=requests.get(HOST_ADDR+'/api/db/read',json=inp)
         res=send.content
         res=eval(res)
         products=[]
         for prod in res:
             inp={"table":"PRODUCT","columns":["PRODTITLE"],"where":"PRODID = "+str(prod[0])}
-            send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
+            send=requests.get(HOST_ADDR+'/api/db/read',json=inp)
             product=send.content
             product=eval(product)
             products.append(product[0][0])
@@ -80,12 +96,12 @@ def transactions():
 def related_products(prodid):
     
     inp={"table":"PRODUCT","columns":["PRODTITLE"],"where":"PRODID = "+prodid}
-    send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
+    send=requests.get(HOST_ADDR+'/api/db/read',json=inp)
     data=send.content
     data=eval(data)
     if len(data)==0:
         return "[]"
-    send=requests.get('http://127.0.0.1:5000/api/transactions')
+    send=requests.get(HOST_ADDR+'/api/transactions')
     transactions=send.content
     transactions=eval(transactions)
     #print(transactions)
@@ -97,7 +113,7 @@ def related_products(prodid):
     for prod in rel:
         #print(prod)
         inp={"table":"PRODUCT","columns":["PRODID"],"where":"PRODTITLE LIKE '"+prod+"%'"}
-        send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
+        send=requests.get(HOST_ADDR+'/api/db/read',json=inp)
         ids=send.content
         ids=eval(ids)
         for pid in ids:
@@ -105,7 +121,7 @@ def related_products(prodid):
                 products.add(str(pid[0]))
             else:
                 continue
-            send=requests.get('http://127.0.0.1:5000/api/product/'+str(pid[0]))
+            send=requests.get(HOST_ADDR+'/api/product/'+str(pid[0]))
             d=send.content
             d=eval(d)
             d["PRODID"]=str(pid[0])
@@ -129,7 +145,7 @@ def GenId():
     json = request.get_json(force=True)
 
     inp={"table":json["table"],"columns":["MAX("+json["column"]+")"],"where":""}
-    send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
+    send=requests.get(HOST_ADDR+'/api/db/read',json=inp)
     data=send.content
     data=eval(data)
     if(data[0][0] != None):
@@ -151,11 +167,11 @@ def login():
         json["type_id"]="FARMID"
         json["type_name"]="FARMNAME"
         json["loc_type"]="FARMLOC"
-    send=requests.get('http://127.0.0.1:5000/api/check',json=inp)
+    send=requests.get(HOST_ADDR+'/api/check',json=inp)
 
     if(send.status_code == requests.codes.ok):
-        inp={"table":json["type"],"columns":[json["type_id"],json["loc_type"]],"where":json["type_name"]+" = '"+json["name"]+"'"}
-        send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
+        inp={"table":json["type"].upper(),"columns":[json["type_id"],json["loc_type"]],"where":json["type_name"]+" = '"+json["name"]+"'"}
+        send=requests.get(HOST_ADDR+'/api/db/read',json=inp)
         data=send.content.decode()
         id_=eval(data)
         return Response("successfully logged in,"+json["type"]+","+str(id_[0][0])+","+json["name"]+","+str(id_[0][1]),status=200,mimetype="application/text")
@@ -171,7 +187,7 @@ def add_user():
     else:
         inp={"table":"FARMER","where":"FARMNAME ='"+json["name"]+"'"}
 
-    send=requests.get('http://127.0.0.1:5000/api/check',json=inp)
+    send=requests.get(HOST_ADDR+'/api/check',json=inp)
 
     if(send.status_code == requests.codes.ok):
         return Response("username already taken",status=201,mimetype="application/text")
@@ -185,11 +201,11 @@ def add_user():
         columns=["CONSID","CONSNAME","CONSPASS","CONSLOC"]
     
     inp={"table":table,"column":columns[0]}
-    send=requests.get('http://127.0.0.1:5000/api/GenId',json=inp)
+    send=requests.get(HOST_ADDR+'/api/GenId',json=inp)
     userid=send.content
     userid=eval(userid)
     inp={"table":table,"type":"insert","columns":columns,"data":[str(userid),json["name"],json["passwd"],json["loc"]]}
-    send=requests.post('http://127.0.0.1:5000/api/db/write',json=inp)
+    send=requests.post(HOST_ADDR+'/api/db/write',json=inp)
 
     if(send.status_code == requests.codes.ok):
         return Response("successfully created account",status=200,mimetype="application/text")
@@ -202,17 +218,17 @@ def update_cart():
     json = request.get_json()
 
     inp={"table":"PRODUCT","where":"PRODID = "+json["prodid"]+" AND MINBUYQUANT <="+json["quantity"]}
-    send=requests.get('http://127.0.0.1:5000/api/check',json=inp)
+    send=requests.get(HOST_ADDR+'/api/check',json=inp)
     if(send.status_code != requests.codes.ok):
         return Response("Not buying minimum quantity",status=201,mimetype="application/text")
 
     inp={"table":"CART","where": "CONSID="+json["consid"]+" AND PRODID = "+json["prodid"]}
-    send=requests.get('http://127.0.0.1:5000/api/check',json=inp)
+    send=requests.get(HOST_ADDR+'/api/check',json=inp)
     if(send.status_code != requests.codes.ok):
         return Response("Product not present in cart",status=201,mimetype="application/text")
 
     inp={"table": "CART","type": "update","columns": ["QUANTITY"],"data": [json["quantity"]],"where": "CONSID = "+json["consid"]+" AND PRODID = "+json["prodid"]}
-    send=requests.post('http://127.0.0.1:5000/api/db/write',json=inp)
+    send=requests.post(HOST_ADDR+'/api/db/write',json=inp)
 
     if(send.status_code == requests.codes.ok):
         return Response("1",status=200,mimetype="application/text")
@@ -224,7 +240,7 @@ def update_cart():
 def delete_cart():
     json = request.get_json()
     inp={"table": "CART","type": "delete","where": "CONSID = "+json["consid"]+" AND PRODID = "+json["prodid"]}
-    send=requests.post('http://127.0.0.1:5000/api/db/write',json=inp)
+    send=requests.post(HOST_ADDR+'/api/db/write',json=inp)
 
     if(send.status_code == requests.codes.ok):
         return Response("1",status=200,mimetype="application/text")
@@ -235,7 +251,7 @@ def delete_cart():
 @cross_origin(origin='*')
 def delete_product(prodid):
     inp={"table": "PRODUCT","type": "delete","where": "PRODID = "+str(prodid)}
-    send=requests.post('http://127.0.0.1:5000/api/db/write',json=inp)
+    send=requests.post(HOST_ADDR+'/api/db/write',json=inp)
 
     if(send.status_code == requests.codes.ok):
         return Response("1",status=200,mimetype="application/text")
@@ -247,11 +263,11 @@ def delete_product(prodid):
 def add_product():
     json = request.get_json(force=True)
     inp={"table":"PRODUCT","column":"PRODID"}
-    send=requests.get('http://127.0.0.1:5000/api/GenId',json=inp)
+    send=requests.get(HOST_ADDR+'/api/GenId',json=inp)
     prodid=send.content
     prodid=eval(prodid)
     inp={"table":"PRODUCT","type":"insert","columns":["PRODID","PRODTITLE","PRODDESC","PRODTYPE","UPLOADTIME","OWNERID","PRICE","MAXQUANT","MINBUYQUANT"],"data":[str(prodid),json["title"],json["desc"],json["type"],current_time(),json["ownerid"],json["price"],json["maxquant"],json["minbuyquant"]]}
-    send=requests.post('http://127.0.0.1:5000/api/db/write',json=inp)
+    send=requests.post(HOST_ADDR+'/api/db/write',json=inp)
 
     price = int(json["price"])
     disc = ps.get_discount(json["title"],int(price))
@@ -261,11 +277,11 @@ def add_product():
         disc=disc[0]
         #print(disc)
         inp={"table":"DEALS","column":"DEALID"}
-        send=requests.get('http://127.0.0.1:5000/api/GenId',json=inp)
+        send=requests.get(HOST_ADDR+'/api/GenId',json=inp)
         dealid=send.content
         dealid=eval(dealid)
         inp={"table":"DEALS","type":"insert","columns":["DEALID","PRODID","NEWPRICE","DISCOUNT_PERCENT"],"data":[str(dealid),str(prodid),str(price),str(disc)]}
-        send=requests.post('http://127.0.0.1:5000/api/db/write',json=inp)
+        send=requests.post(HOST_ADDR+'/api/db/write',json=inp)
 
     if(send.status_code == requests.codes.ok):
         return Response("Added Product to catalogue !,"+str(prodid)+","+str(prodid),status=200,mimetype="application/text")
@@ -301,12 +317,12 @@ def add_product():
 @cross_origin(origin='*')
 def add_review():
     inp={"table":"REVIEW","column":"REVIEWID"}
-    send=requests.get('http://127.0.0.1:5000/api/GenId',json=inp)
+    send=requests.get(HOST_ADDR+'/api/GenId',json=inp)
     reviewid=send.content
     reviewid=eval(reviewid)
     json = request.get_json(force=True)
     inp={"table":"REVIEW","type":"insert","columns":["REVIEWID","REVIEWERID","PRODID","REVIEWDESC","REVIEWSTAR","REVIEWTIME","VERIFIED"],"data":[str(reviewid),json["reviewerid"],json["prodid"],json["reviewdesc"],json["reviewstar"],current_time(),json["verified"]]}
-    send=requests.post('http://127.0.0.1:5000/api/db/write',json=inp)
+    send=requests.post(HOST_ADDR+'/api/db/write',json=inp)
 
     if(send.status_code == requests.codes.ok):
         return Response("1",status=200,mimetype="application/text")
@@ -318,7 +334,7 @@ def add_review():
 def add_cart():
     json = request.get_json(force=True)
     inp={"table":"CART","type":"insert","columns":["CONSID","PRODID","QUANTITY"],"data":[json["consid"],json["prodid"],json["quantity"]]}
-    send=requests.post('http://127.0.0.1:5000/api/db/write',json=inp)
+    send=requests.post(HOST_ADDR+'/api/db/write',json=inp)
 
     if(send.status_code == requests.codes.ok):
         return Response("1",status=200,mimetype="application/text")
@@ -330,7 +346,7 @@ def add_cart():
 def get_image(imageid):
 
     inp={"table":"IMAGE","columns":["IMAGEPATH","IMAGENAME"],"where":"IMAGEID = "+imageid}
-    send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
+    send=requests.get(HOST_ADDR+'/api/db/read',json=inp)
     data=send.content
     data=eval(data)
 
@@ -343,21 +359,21 @@ def get_image(imageid):
 @cross_origin(origin='*')
 def add_sale(consid):
     inp={"table":"CART","columns":["*"],"where":"CONSID="+consid}
-    send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
+    send=requests.get(HOST_ADDR+'/api/db/read',json=inp)
     data=send.content
     data=eval(data)
     inp={"table":"SALES","column":"SALEID"}
-    send=requests.get('http://127.0.0.1:5000/api/GenId',json=inp)
+    send=requests.get(HOST_ADDR+'/api/GenId',json=inp)
     saleid=send.content
     saleid=eval(saleid)
     for i in range(0,len(data)):
         inp={"table":"SALES","type":"insert","columns":["SALEID","CONSID","PRODID","QUANTITY","BUYTIME"],"data":[str(saleid),str(data[i][0]),str(data[i][1]),str(data[i][2]),current_time()]}
-        send=requests.post('http://127.0.0.1:5000/api/db/write',json=inp)
+        send=requests.post(HOST_ADDR+'/api/db/write',json=inp)
         if(send.status_code != requests.codes.ok):
             return Response("0",status=500,mimetype="application/text")
 
     inp={"table":"CART","type":"delete","where":""}
-    send=requests.post('http://127.0.0.1:5000/api/db/write',json=inp)
+    send=requests.post(HOST_ADDR+'/api/db/write',json=inp)
 
     if(send.status_code == requests.codes.ok):
         return Response("1",status=200,mimetype="application/text")
@@ -371,18 +387,18 @@ def upload(prodid):
     #Accepts all files
     #If user uploads the same file again then a new file will not be created
     inp={"table":"IMAGE","column":"IMAGEID"}
-    send=requests.get('http://127.0.0.1:5000/api/GenId',json=inp)
+    send=requests.get(HOST_ADDR+'/api/GenId',json=inp)
     imageid=send.content
     imageid=eval(imageid)
     file = request.files['file']
     filename = secure_filename(file.filename)
     file_ext = os.path.splitext(filename)[1]
-    uploads_dir = "../frontend/images/"+prodid
+    uploads_dir = "/images/"+prodid
     
     path=uploads_dir.replace("\\","/")
     ext=file_ext[1:]
     inp={"table":"IMAGE","type":"insert","columns":["IMAGEID","PRODID","IMAGENAME","IMAGEPATH","IMAGEX"],"data":[str(imageid),prodid,filename,path,ext]}
-    send=requests.post('http://127.0.0.1:5000/api/db/write',json=inp)
+    send=requests.post(HOST_ADDR+'/api/db/write',json=inp)
 
     if(send.status_code == requests.codes.ok):
         os.makedirs(uploads_dir, exist_ok=True)
@@ -397,7 +413,7 @@ def search(term):
 
     #inp={"table":"product","columns":["PRODTITLE"],"where":""}
     inp={"table":"PRODUCT","columns":["PRODTITLE","PRODID"],"where":"PRODTITLE LIKE '%"+term+"%'"}
-    send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
+    send=requests.get(HOST_ADDR+'/api/db/read',json=inp)
     data=send.content
     data=eval(data)
     result=[[i[0],i[1]] for i in data]
@@ -415,13 +431,13 @@ def complete_search(term):
 
     #inp={"table":"product","columns":["PRODTITLE"],"where":""}
     inp={"table":"PRODUCT","columns":["PRODID"],"where":"PRODTITLE LIKE '%"+term+"%' OR PRODDESC LIKE '%"+term+"%'"}
-    send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
+    send=requests.get(HOST_ADDR+'/api/db/read',json=inp)
     data=send.content
     data=eval(data)
     data=[i[0] for i in data]
     result=[]
     for i in data:
-        send=requests.get('http://127.0.0.1:5000/api/product/'+str(i))
+        send=requests.get(HOST_ADDR+'/api/product/'+str(i))
         d=send.content
         d=eval(d)
         d["PRODID"]=str(i)
@@ -433,21 +449,21 @@ def complete_search(term):
 def disp_product(prodid):
 
     inp={"table":"PRODUCT","columns":["PRODTITLE","PRODDESC","PRODTYPE","UPLOADTIME","OWNERID","PRICE","MAXQUANT","MINBUYQUANT"],"where":"PRODID="+prodid}
-    send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
+    send=requests.get(HOST_ADDR+'/api/db/read',json=inp)
     data=send.content
     data=eval(data)
     data = data[0]
 
     #for l in range(0,len(data)):
     inp={"table":"FARMER","columns":["FARMNAME","FARMLOC"],"where":"FARMID="+str(data[4])}
-    send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
+    send=requests.get(HOST_ADDR+'/api/db/read',json=inp)
     user=send.content
     user=eval(user)
     for i in user[0]:
         data.append(i)
 
     inp={"table":"IMAGE","columns":["IMAGEID","IMAGEPATH","IMAGENAME"],"where":"PRODID="+prodid}
-    send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
+    send=requests.get(HOST_ADDR+'/api/db/read',json=inp)
     img=send.content
     img=eval(img)
     l = []
@@ -485,12 +501,12 @@ def get_cart(consid):
 
     #inp={"table":"product","columns":["PRODTITLE"],"where":""}
     inp={"table":"CART","columns":["PRODID","QUANTITY"],"where":"CONSID ="+consid}
-    send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
+    send=requests.get(HOST_ADDR+'/api/db/read',json=inp)
     data=send.content
     data=eval(data)
     result=[]
     for i in data:
-        send=requests.get('http://127.0.0.1:5000/api/product/'+str(i[0]))
+        send=requests.get(HOST_ADDR+'/api/product/'+str(i[0]))
         d=send.content
         d=eval(d)
         d["BUY_Quanity"] = i[1]
@@ -506,13 +522,13 @@ def get_cart(consid):
 def disp_review(prodid):
 
     inp={"table":"REVIEW","columns":["REVIEWID","REVIEWERID","REVIEWDESC","REVIEWSTAR","REVIEWTIME","VERIFIED"],"where":"PRODID="+prodid}
-    send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
+    send=requests.get(HOST_ADDR+'/api/db/read',json=inp)
     data=send.content
     data=eval(data)
 
     for l in range(0,len(data)):
         inp={"table":"CONSUMER","columns":["CONSNAME","CONSLOC"],"where":"CONSID="+str(data[l][1])}
-        send=requests.get('http://127.0.0.1:5000/api/db/read',json=inp)
+        send=requests.get(HOST_ADDR+'/api/db/read',json=inp)
         user=send.content
         user=eval(user)
         for i in user[0]:
@@ -536,6 +552,7 @@ def disp_review(prodid):
 @app.route('/api/db/write',methods=["POST"])
 @cross_origin(origin='*')
 def write_db():
+    db = pymysql.connect(**config) 
     json = request.get_json(force=True)
     cur = db.cursor()
 
@@ -567,7 +584,7 @@ def write_db():
     cur.execute(sql)
     db.commit()
     cur.close()
-
+    db.close()
     return Response("1",status=200,mimetype="application/text")
 
 """
@@ -587,6 +604,7 @@ def write_db():
 @app.route('/api/db/read',methods=["GET"])
 @cross_origin(origin='*')
 def read_db():
+    db = pymysql.connect(**config) 
     json = request.get_json(force=True)
     cur = db.cursor()
     columns = json["columns"][0]
@@ -602,7 +620,7 @@ def read_db():
     results = cur.fetchall()
     results = list(map(list,results))
     cur.close()
-
+    db.close()
     return Response(str(results),status=200,mimetype="application/text")
 
 """

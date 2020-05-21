@@ -1,0 +1,8 @@
+flask
+pymysql
+requests
+flask_cors
+Werkzeug
+numpy
+pandas
+apyori

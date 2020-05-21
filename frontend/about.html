@@ -235,8 +235,9 @@ Bangalore-560085</span></li>
   <script src="js/main.js"></script>
   <a id="prod_page" href="product-single.html" style="display: none;"></a>
   <a id="search_page" href="search_results.html" style="display: none;"></a>
+  <script src="js/addr.js"></script>
   <script>
-	  var object ={
+    var object ={
     xhr:new XMLHttpRequest(),
     getTerm:function(event){
 
@@ -261,7 +262,7 @@ Bangalore-560085</span></li>
             object.populateFood(cacheObj);
         } else {
             object.xhr.onloadend = object.showResult;
-            object.xhr.open("get", "http://127.0.0.1:5000/api/sub/"+object.search.value);
+            object.xhr.open("get", URL_ADDR+"/api/sub/"+object.search.value);
             object.xhr.responseType="json";
             object.xhr.send();
         }
