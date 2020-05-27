@@ -7,6 +7,7 @@ from werkzeug.utils import secure_filename
 import price_suggestion as ps
 import related_products as rp
 import datetime
+from random import randint
 
 config = {
         'user': 'root',
@@ -143,15 +144,23 @@ def predict_price():
 @cross_origin(origin='*')
 def GenId():
     json = request.get_json(force=True)
-
-    inp={"table":json["table"],"columns":["MAX("+json["column"]+")"],"where":""}
+    id=randint(0, 10000)
+    inp={"table":json["table"],"columns":["*"],"where":json["column"]+" = "+str(id)}
     send=requests.get(HOST_ADDR+'/api/db/read',json=inp)
     data=send.content
     data=eval(data)
-    if(data[0][0] != None):
-        return Response(str(data[0][0]+1),status=200,mimetype="application/text")
-    else:
-        return Response("1",status=200,mimetype="application/text") 
+    print(data)
+    while len(data)>5:
+        id=randint(0, 10000) 
+        inp={"table":json["table"],"columns":["*"],"where":json["column"]+" = "+str(id)}
+        send=requests.get(HOST_ADDR+'/api/db/read',json=inp) 
+        data=send.content 
+        data=eval(data)
+    #if(data[0][0] != None):
+        #return Response(str(data[0][0]+1),status=200,mimetype="application/text")
+    #else:
+    return Response(str(id),status=200,mimetype="application/text") 
+
 @app.route('/api/login', methods=['POST'])
 @cross_origin(origin='*')
 def login():
@@ -195,16 +204,16 @@ def add_user():
 
     if json["type"]=="farmer":
         table="FARMER"
-        columns=["FARMID","FARMNAME","FARMPASS","FARMLOC"]
+        columns=["FARMNAME","FARMPASS","FARMLOC"]
     elif json["type"]=="consumer":
         table="CONSUMER"
-        columns=["CONSID","CONSNAME","CONSPASS","CONSLOC"]
+        columns=["CONSNAME","CONSPASS","CONSLOC"]
     
     inp={"table":table,"column":columns[0]}
-    send=requests.get(HOST_ADDR+'/api/GenId',json=inp)
-    userid=send.content
-    userid=eval(userid)
-    inp={"table":table,"type":"insert","columns":columns,"data":[str(userid),json["name"],json["passwd"],json["loc"]]}
+    #send=requests.get(HOST_ADDR+'/api/GenId',json=inp)
+    #userid=send.content
+    #userid=eval(userid)
+    inp={"table":table,"type":"insert","columns":columns,"data":[json["name"],json["passwd"],json["loc"]]}
     send=requests.post(HOST_ADDR+'/api/db/write',json=inp)
 
     if(send.status_code == requests.codes.ok):
@@ -262,13 +271,18 @@ def delete_product(prodid):
 @cross_origin(origin='*')
 def add_product():
     json = request.get_json(force=True)
-    inp={"table":"PRODUCT","column":"PRODID"}
-    send=requests.get(HOST_ADDR+'/api/GenId',json=inp)
-    prodid=send.content
-    prodid=eval(prodid)
-    inp={"table":"PRODUCT","type":"insert","columns":["PRODID","PRODTITLE","PRODDESC","PRODTYPE","UPLOADTIME","OWNERID","PRICE","MAXQUANT","MINBUYQUANT"],"data":[str(prodid),json["title"],json["desc"],json["type"],current_time(),json["ownerid"],json["price"],json["maxquant"],json["minbuyquant"]]}
+    #inp={"table":"PRODUCT","column":"PRODID"}
+    #send=requests.get(HOST_ADDR+'/api/GenId',json=inp)
+    #prodid=send.content
+    #prodid=eval(prodid)
+    inp={"table":"PRODUCT","type":"insert","columns":["PRODTITLE","PRODDESC","PRODTYPE","UPLOADTIME","OWNERID","PRICE","MAXQUANT","MINBUYQUANT"],"data":[json["title"],json["desc"],json["type"],current_time(),json["ownerid"],json["price"],json["maxquant"],json["minbuyquant"]]}
     send=requests.post(HOST_ADDR+'/api/db/write',json=inp)
 
+    inp={"table":"PRODUCT","columns":["PRODID"],"where":"PRODTITLE = '"+json["title"]+"' ORDER BY UPLOADTIME DESC"}
+    send=requests.get(HOST_ADDR+'/api/db/read',json=inp)
+    prodid=send.content
+    prodid=eval(prodid)[0][0]
+    print(prodid)
     price = int(json["price"])
     disc = ps.get_discount(json["title"],int(price))
     disc=eval(disc)
@@ -276,11 +290,11 @@ def add_product():
     if disc:
         disc=disc[0]
         #print(disc)
-        inp={"table":"DEALS","column":"DEALID"}
-        send=requests.get(HOST_ADDR+'/api/GenId',json=inp)
-        dealid=send.content
-        dealid=eval(dealid)
-        inp={"table":"DEALS","type":"insert","columns":["DEALID","PRODID","NEWPRICE","DISCOUNT_PERCENT"],"data":[str(dealid),str(prodid),str(price),str(disc)]}
+        #inp={"table":"DEALS","column":"DEALID"}
+        #send=requests.get(HOST_ADDR+'/api/GenId',json=inp)
+        #dealid=send.content
+        #dealid=eval(dealid)
+        inp={"table":"DEALS","type":"insert","columns":["PRODID","NEWPRICE","DISCOUNT_PERCENT"],"data":[str(prodid),str(price),str(disc)]}
         send=requests.post(HOST_ADDR+'/api/db/write',json=inp)
 
     if(send.status_code == requests.codes.ok):
@@ -316,12 +330,12 @@ def add_product():
 @app.route('/api/review', methods=['POST'])
 @cross_origin(origin='*')
 def add_review():
-    inp={"table":"REVIEW","column":"REVIEWID"}
-    send=requests.get(HOST_ADDR+'/api/GenId',json=inp)
-    reviewid=send.content
-    reviewid=eval(reviewid)
+    #inp={"table":"REVIEW","column":"REVIEWID"}
+    #send=requests.get(HOST_ADDR+'/api/GenId',json=inp)
+    #reviewid=send.content
+    #reviewid=eval(reviewid)
     json = request.get_json(force=True)
-    inp={"table":"REVIEW","type":"insert","columns":["REVIEWID","REVIEWERID","PRODID","REVIEWDESC","REVIEWSTAR","REVIEWTIME","VERIFIED"],"data":[str(reviewid),json["reviewerid"],json["prodid"],json["reviewdesc"],json["reviewstar"],current_time(),json["verified"]]}
+    inp={"table":"REVIEW","type":"insert","columns":["REVIEWERID","PRODID","REVIEWDESC","REVIEWSTAR","REVIEWTIME","VERIFIED"],"data":[json["reviewerid"],json["prodid"],json["reviewdesc"],json["reviewstar"],current_time(),json["verified"]]}
     send=requests.post(HOST_ADDR+'/api/db/write',json=inp)
 
     if(send.status_code == requests.codes.ok):
@@ -332,7 +346,24 @@ def add_review():
 @app.route('/api/cart', methods=['POST'])
 @cross_origin(origin='*')
 def add_cart():
-    json = request.get_json(force=True)
+
+    json = request.get_json(force=True) 
+    inp={"table":"PRODUCT","where":"PRODID = "+json["prodid"]+" AND MINBUYQUANT <="+json["quantity"]}
+    send=requests.get(HOST_ADDR+'/api/check',json=inp)
+    if(send.status_code != requests.codes.ok):
+        return Response("Not buying minimum quantity",status=201,mimetype="application/text")
+
+    inp={"table":"CART","where": "CONSID="+json["consid"]+" AND PRODID = "+json["prodid"]}
+    send=requests.get(HOST_ADDR+'/api/check',json=inp)
+    print(json)
+    if(send.status_code == requests.codes.ok):
+        send=requests.put(HOST_ADDR+'/api/cart',json=json)
+        print(send)
+        if(send.status_code == requests.codes.ok):
+            return Response("1",status=200,mimetype="application/text")
+        else:
+            return Response("0",status=500,mimetype="application/text") 
+
     inp={"table":"CART","type":"insert","columns":["CONSID","PRODID","QUANTITY"],"data":[json["consid"],json["prodid"],json["quantity"]]}
     send=requests.post(HOST_ADDR+'/api/db/write',json=inp)
 
@@ -386,10 +417,10 @@ def upload(prodid):
 
     #Accepts all files
     #If user uploads the same file again then a new file will not be created
-    inp={"table":"IMAGE","column":"IMAGEID"}
-    send=requests.get(HOST_ADDR+'/api/GenId',json=inp)
-    imageid=send.content
-    imageid=eval(imageid)
+    #inp={"table":"IMAGE","column":"IMAGEID"}
+    #send=requests.get(HOST_ADDR+'/api/GenId',json=inp)
+    #imageid=send.content
+    #imageid=eval(imageid)
     file = request.files['file']
     filename = secure_filename(file.filename)
     file_ext = os.path.splitext(filename)[1]
@@ -397,9 +428,12 @@ def upload(prodid):
     
     path=uploads_dir.replace("\\","/")
     ext=file_ext[1:]
-    inp={"table":"IMAGE","type":"insert","columns":["IMAGEID","PRODID","IMAGENAME","IMAGEPATH","IMAGEX"],"data":[str(imageid),prodid,filename,path,ext]}
+    inp={"table":"IMAGE","type":"insert","columns":["PRODID","IMAGENAME","IMAGEPATH","IMAGEX"],"data":[prodid,filename,path,ext]}
     send=requests.post(HOST_ADDR+'/api/db/write',json=inp)
-
+    inp={"table":"IMAGE","columns":["IMAGEID"],"where":"IMAGENAME = '"+filename+"' AND IMAGEPATH ='"+path+"'"}
+    send=requests.get(HOST_ADDR+'/api/db/read',json=inp)
+    imageid=send.content
+    imageid=eval(imageid)[0][0]
     if(send.status_code == requests.codes.ok):
         os.makedirs(uploads_dir, exist_ok=True)
         file.save(os.path.join(uploads_dir, filename))
